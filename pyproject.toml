@@ -1,0 +1,5 @@
+[tool]
+[tool.commitizen]
+name = "cz_commitizen_emoji"
+version = "2.0.0"
+tag_format = "$version"

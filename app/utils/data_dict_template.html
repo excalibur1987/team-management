@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        padding: 0 2rem;
+        border: 1px ridge #000;
+      }
+      h1.title {
+        margin: auto;
+        width: 50%;
+      }
+      .sql-table-contianer h2 {
+        border-bottom: 2px solid black;
+        width: max-content;
+        padding: 0 0 0.5rem 0;
+      }
+      .sql-table-contianer sub {
+        font-size: small;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      table * {
+        text-align: start;
+        border: 3px solid black;
+      }
+      table th {
+        padding: 0.5rem;
+        font-size: larger;
+        color: white;
+        background-color: #635e5e73;
+      }
+      b {
+        margin-right: 1rem;
+      }
+      tbody td {
+        padding: 0.5rem;
+      }
+      pre {
+        background-color: gray;
+        padding: 0.5rem;
+        color: #fff;
+        width: max-content;
+        border-radius: 10px;
+        font-size: large;
+      }
+      .sql-table-contianer {
+        border-bottom: 3px solid #000000;
+        padding-bottom: 1.5rem;
+      }
+    </style>
+    <title>Data Dictionary</title>
+  </head>
+  <body>
+    <h1 class="title">Data Dictionary</h1>
+    {% for table, table_details in tables.items() %}
+    <div class="sql-table-contianer" data-model="{{table_details.model.name}}" {% if table_details.type == 'view' %}data-view=""{%endif%}>
+      <h2>
+        <span class="table-name">{{table}}</span>
+        <sub>{{table_details.type.upper()}}</sub>
+      </h2>
+
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href="{{table_details.path}}"
+          >{{table_details.model.name}}</a
+        >
+      </p>
+      <div class="wrapper">
+        <h2>Description:</h2>
+        <p>{{table_details.description}}</p>
+      </div>
+      {% if table_details.type == 'view' %}
+      <div class="wrapper">
+        <h2>DDL:</h2>
+        <pre>{{table_details.ddl}}</pre>
+      </div>
+      {% endif %}
+      <table class="col-details">
+        <thead>
+          <th>Database Field Name</th>
+          <th>Data Type</th>
+          <th>Description</th>
+          <th>Primary/Foreign</th>
+        </thead>
+        <tbody>
+          {% for col in
+            table_details.columns %}
+          <tr>
+            <td>{{col.name}}</td>
+            <td>{{col.type}}</td>
+            <td>{{col.comment}}</td>
+            <td>
+              {{col['primary/foreign']}}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <table class="table-constraints">
+        <thead>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Columns</th>
+        </thead>
+        <tbody>
+            {% for type_, values in table_details.constraints.items()%} {% for const in values
+              %}
+              <tr>
+                {% if loop.index == 1 %}
+                <td rowspan="{{values|length}}" colspan="1">{{type_}}</td>
+                {% endif %}
+                <td rowspan="{{const.columns|length}}" colspan="1">
+                  {{const.name}}
+                </td>
+                <td colspan="1">{{''.join(const.columns)}}</td>
+              </tr>
+          {% endfor %} {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  </body>
+</html>
