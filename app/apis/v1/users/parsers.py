@@ -56,17 +56,6 @@ user_info_parser.add_argument(
     location="form",
     required=False,
 ).add_argument(
-    "firstNameAr",
-    dest="first_name_ar",
-    type=str,
-    location="form",
-    required=False,
-).add_argument(
-    "lastNameAr",
-    dest="last_name_ar",
-    type=str,
-    location="form",
-).add_argument(
     "photo",
     default=None,
     type=werkzeug.datastructures.FileStorage,

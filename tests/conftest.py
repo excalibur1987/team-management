@@ -2,12 +2,11 @@ import os
 from typing import List, TypedDict
 
 import pytest
-from flask.app import Flask
-from flask.testing import FlaskClient
-
 from app import create_app
 from app.database import db
 from app.settings import TestConfig
+from flask.app import Flask
+from flask.testing import FlaskClient
 
 from .helpers import ExtendedClient, create_user
 
@@ -22,8 +21,6 @@ class UserDict(TypedDict):
     mobile: str
     first_name: str
     last_name: str
-    first_name_ar: str
-    last_name_ar: str
     roles: List[str]
 
 

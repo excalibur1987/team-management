@@ -9,11 +9,17 @@ from sqlalchemy import Column, and_, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.mutable import Mutable
-from sqlalchemy.sql.expression import cast, or_
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.relationships import RelationshipProperty
+from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.schema import ForeignKey, MetaData, Table
-from sqlalchemy.sql.sqltypes import BOOLEAN, INTEGER, Boolean, DateTime, String
+from sqlalchemy.sql.sqltypes import INTEGER, DateTime, String
 
 from app.exceptions import InvalidUsage
+
+if TYPE_CHECKING:
+    from app.apis.v1.users.models import User
+
 
 metadata = MetaData(
     naming_convention={
@@ -34,14 +40,12 @@ class ExtendedModel(Model):
     id = Column(
         INTEGER, primary_key=True, nullable=False, comment="Unique row identifier"
     )
-    updated_at: "Column[datetime]"
+    date_updated: "Column[datetime]"
 
     def update(self, ignore_none: bool = False, **kwargs):
         for key in kwargs.keys():
             if not ignore_none or kwargs.get(key) is not None:
                 setattr(self, key, kwargs.get(key))
-        if hasattr(self, "updated_at"):
-            self.updated_at = datetime.now(tz=current_app.config["TZ"])
         db.session.commit()
 
     @classmethod
@@ -131,28 +135,69 @@ else:
 
 class DatedModel(object):
 
-    date_added = Column(DateTime(True), nullable=False, server_default=text("now()"))
-    date_updated = Column(DateTime(True), nullable=False, server_default=text("now()"))
+    date_added = Column(
+        DateTime(True),
+        nullable=False,
+        server_default=text("now()"),
+        comment="row timestamp",
+    )
+    date_updated = Column(
+        DateTime(True),
+        nullable=False,
+        server_default=text("now()"),
+        comment="timestamp for last updated",
+    )
+
 
     @declared_attr
-    def added_by(cls):
-        return Column(String, ForeignKey("user.id"))
+    def added_by_id(self):
+        return Column(INTEGER, ForeignKey("users.id"))
+
+    @declared_attr
+    def added_by(self):
+        return relationship("User", foreign_keys=["added_by_id"])
+
+    @declared_attr
+    def updated_by_id(self):
+        return Column(INTEGER, ForeignKey("users.id"), comment="fk for user's table")
+    
+    @declared_attr
+    def updated_by(self):
+        return relationship("User", foreign_keys=["updated_by_id"])
+
+
+    added_by_id: "Column[INTEGER]"
+    added_by: "RelationshipProperty[User]"
+    updated_by_id: "Column[INTEGER]"
+    updated_by: "RelationshipProperty[User]"
+
 
     def __init__(self, **kwargs) -> None:
 
-        if not current_user and not kwargs.get("added_by", None):
+        if not current_user and not kwargs.get("added_by_id", None):
             raise InvalidUsage.user_not_found()
-        self.added_by = kwargs.get("added_by", current_user.id)
+        self.added_by_id = kwargs.get("added_by", current_user.id)
+
+    def update(self, ignore_none: bool = False, **kwargs):
+        for key in kwargs.keys():
+            if not ignore_none or kwargs.get(key) is not None:
+                setattr(self, key, kwargs.get(key))
+        self.date_updated = datetime.now(tz=current_app.config["TZ"])
+        self.updated_by_id = kwargs.get("updated_by_id", current_user.id)
+        db.session.commit()
 
 
 class CancelableModel(object):
 
-    cancelled = Column(Boolean, nullable=False, server_default=cast(0, BOOLEAN))
-    date_cancelled = Column(DateTime(True), nullable=True)
+    cancelled_at = Column(
+        DateTime(True), nullable=True, comment="timestamp for cancellation of record"
+    )
 
     @declared_attr
     def cancelled_by_id(cls):
-        return Column(String, ForeignKey("user.id"))
+        return Column(INTEGER, ForeignKey("users.id"), comment="fk for user's table")
+
+    cancelled_by_id: "Column[INTEGER]"
 
     def cancel(self):
 

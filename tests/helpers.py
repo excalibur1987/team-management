@@ -1,10 +1,9 @@
 from typing import Any, List, TypedDict
 
-from flask.testing import FlaskClient
-
 from app.apis.v1.roles.models import Role
 from app.apis.v1.users.models import User
 from app.database import db
+from flask.testing import FlaskClient
 
 
 class UserDict(TypedDict):
@@ -17,8 +16,6 @@ class UserDict(TypedDict):
     mobile: str
     first_name: str
     last_name: str
-    first_name_ar: str
-    last_name_ar: str
     roles: List[str]
 
 
