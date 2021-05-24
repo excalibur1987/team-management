@@ -13,8 +13,9 @@ from typing import (
     TypeVar,
 )
 
-from app.database import BaseModel, ExtendedModel, db
 from flask_migrate import revision
+
+from app.database import BaseModel, ExtendedModel, db
 
 T = TypeVar("T")
 

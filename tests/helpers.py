@@ -1,9 +1,10 @@
 from typing import Any, List, TypedDict
 
+from flask.testing import FlaskClient
+
 from app.apis.v1.roles.models import Role
 from app.apis.v1.users.models import User
 from app.database import db
-from flask.testing import FlaskClient
 
 
 class UserDict(TypedDict):

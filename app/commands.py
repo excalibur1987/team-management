@@ -201,7 +201,13 @@ def add_roles(roles: List[str]):
     from app.database import db
 
     try:
-        db.session.add_all([Role(role, description=f"{role.title()} role") for role in roles if not Role.get(name=role)])
+        db.session.add_all(
+            [
+                Role(role, description=f"{role.title()} role")
+                for role in roles
+                if not Role.get(name=role)
+            ]
+        )
         db.session.commit()
     except DatabaseError:
         print("Error adding roles")

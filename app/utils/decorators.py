@@ -1,9 +1,10 @@
 from functools import wraps
 from typing import Callable, Iterable, List, Union
 
-from app.exceptions import InvalidUsage
 from flask import g
 from flask_principal import Identity, Permission, RoleNeed
+
+from app.exceptions import InvalidUsage
 
 
 def check_roles(
