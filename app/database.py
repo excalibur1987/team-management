@@ -10,15 +10,14 @@ from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm.relationships import RelationshipProperty
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.schema import ForeignKey, MetaData, Table
-from sqlalchemy.sql.sqltypes import DATETIME, INTEGER, DateTime
+from sqlalchemy.sql.sqltypes import INTEGER, DateTime
 
 from app.exceptions import InvalidUsage
 
 if TYPE_CHECKING:
-    from app.apis.v1.users.models import User
+    from app.apis.v1.users.models import User  # NOQA
 
 
 metadata = MetaData(
@@ -59,7 +58,7 @@ class ExtendedModel(Model):
         """
         for arg in kwargs.keys():
             assert hasattr(cls, arg)
-        return (
+        result: T = (
             db.session.query(cls)
             .filter(
                 and_(
@@ -73,6 +72,7 @@ class ExtendedModel(Model):
             )
             .one_or_none()
         )
+        return result
 
     def __iter__(self):
         for key in self.__dict__:
@@ -134,19 +134,23 @@ else:
 
 
 class DatedModel(object):
+    @declared_attr
+    def date_added(self):
+        return Column(
+            DateTime(True),
+            nullable=False,
+            default=lambda: datetime.now(tz=current_app.config["TZ"]),
+            comment="row timestamp",
+        )
 
-    date_added = Column(
-        DateTime(True),
-        nullable=False,
-        default=lambda: datetime.now(tz=current_app.config["TZ"]),
-        comment="row timestamp",
-    )
-    date_updated = Column(
-        DateTime(True),
-        nullable=False,
-        default=lambda: datetime.now(tz=current_app.config["TZ"]),
-        comment="timestamp for last updated",
-    )
+    @declared_attr
+    def date_updated(self):
+        return Column(
+            DateTime(True),
+            nullable=False,
+            default=lambda: datetime.now(tz=current_app.config["TZ"]),
+            comment="timestamp for last updated",
+        )
 
     @declared_attr
     def added_by_id(self):
@@ -163,11 +167,6 @@ class DatedModel(object):
     @declared_attr
     def updated_by(self):
         return relationship("User", foreign_keys=f"{self.__name__}.updated_by_id")
-
-    added_by_id: "Column[INTEGER]"
-    added_by: "RelationshipProperty[User]"
-    updated_by_id: "Column[INTEGER]"
-    updated_by: "RelationshipProperty[User]"
 
     def __init__(self, **kwargs) -> None:
 
@@ -193,8 +192,6 @@ class CancelableModel(object):
     @declared_attr
     def cancelled_by_id(cls):
         return Column(INTEGER, ForeignKey("users.id"), comment="fk for user's table")
-
-    cancelled_by_id: "Column[INTEGER]"
 
     def cancel(self):
 
