@@ -1,13 +1,6 @@
 from typing import Dict, List
 
 import werkzeug
-from app.database import db
-from app.exceptions import InvalidUsage, UserExceptions
-from app.utils import g
-from app.utils.decorators import has_roles
-from app.utils.extended_objects import ExtendedNameSpace
-from app.utils.file_handler import FileHandler
-from app.utils.parsers import offset_parser
 from flask import jsonify, request
 from flask.helpers import make_response
 from flask.wrappers import Response
@@ -24,6 +17,14 @@ from flask_principal import RoleNeed
 from flask_restx import Resource, marshal
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.functions import func
+
+from app.database import db
+from app.exceptions import InvalidUsage, UserExceptions
+from app.utils import g
+from app.utils.decorators import has_roles
+from app.utils.extended_objects import ExtendedNameSpace
+from app.utils.file_handler import FileHandler
+from app.utils.parsers import offset_parser
 
 from .models import Session, User
 from .parsers import user_info_parser, user_login_parser, user_parser
@@ -89,8 +90,8 @@ class UserResource(Resource):
             raise InvalidUsage.user_not_authorized()
         args: Dict = user_info_parser.parse_args()
 
-        newpwd = args.pop("newpwd")
-        pwdcheck = args.pop("pwdcheck")
+        newpwd = args.pop("password")
+        pwdcheck = args.pop("password_check")
 
         if newpwd:
             if newpwd != pwdcheck:
@@ -100,9 +101,11 @@ class UserResource(Resource):
         photo: werkzeug.datastructures.FileStorage = args.pop("photo")
 
         if photo:
-            photostorage = FileHandler(data=photo.stream, name=photo.filename)
+            photostorage = FileHandler(
+                data=photo.stream, title=photo.filename, url=current_user._photo
+            )
             photostorage.save()
-            current_user.photo = photostorage.url
+            current_user.photo = photostorage
 
         for key, val in args.items():
             if hasattr(current_user, key) and val is not None:

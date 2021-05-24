@@ -1,15 +1,16 @@
 import re
 from typing import TYPE_CHECKING, Any, List, Union
 
-from app.database import BaseModel, db
-from app.exceptions import UserExceptions
-from app.utils.file_handler import FileHandler
 from flask import current_app
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import cast
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import BOOLEAN, String
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app.database import BaseModel, db
+from app.exceptions import UserExceptions
+from app.utils.file_handler import FileHandler
 
 if TYPE_CHECKING:
     from ...roles.models import Role
@@ -115,11 +116,15 @@ class User(BaseModel):
             if not regx.match(value):
                 raise UserExceptions.password_check_invalid()
             self._password = value
-        return super().__setattr__(name, value)
+        elif name == "photo":
+            assert isinstance(value, FileHandler)
+            self._photo = value.url
+        else:
+            super(User, self).__setattr__(name, value)
 
     @hybrid_property
-    def photo(self) -> FileHandler:
-        return FileHandler(url=self._photo)
+    def photo(self) -> Union[FileHandler, None]:
+        return FileHandler(url=self._photo) if self._photo else None
 
     @hybrid_property
     def password(self) -> PasswordHelper:

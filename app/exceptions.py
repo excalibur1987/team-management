@@ -83,11 +83,11 @@ PASSWORD_CHECK_INVALID = template(
 )
 
 
-class UserExceptions(Exception):
+class UserExceptions(InvalidUsage):
     status_code = 500
 
     def __init__(self, errors, status_code=None, payload=None):
-        Exception.__init__(self)
+        InvalidUsage.__init__(self)
         self.errors = errors
         if status_code is not None:
             self.status_code = status_code

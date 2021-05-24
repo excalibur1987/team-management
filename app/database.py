@@ -5,7 +5,7 @@ from flask.globals import current_app
 from flask_jwt_extended import current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.model import Model
-from sqlalchemy import Column, and_, text
+from sqlalchemy import Column, and_
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.mutable import Mutable
@@ -13,7 +13,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm.relationships import RelationshipProperty
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.schema import ForeignKey, MetaData, Table
-from sqlalchemy.sql.sqltypes import INTEGER, DateTime, String
+from sqlalchemy.sql.sqltypes import DATETIME, INTEGER, DateTime
 
 from app.exceptions import InvalidUsage
 
@@ -138,16 +138,15 @@ class DatedModel(object):
     date_added = Column(
         DateTime(True),
         nullable=False,
-        server_default=text("now()"),
+        default=lambda: datetime.now(tz=current_app.config["TZ"]),
         comment="row timestamp",
     )
     date_updated = Column(
         DateTime(True),
         nullable=False,
-        server_default=text("now()"),
+        default=lambda: datetime.now(tz=current_app.config["TZ"]),
         comment="timestamp for last updated",
     )
-
 
     @declared_attr
     def added_by_id(self):
@@ -155,22 +154,20 @@ class DatedModel(object):
 
     @declared_attr
     def added_by(self):
-        return relationship("User", foreign_keys=["added_by_id"])
+        return relationship("User", foreign_keys=f"{self.__name__}.added_by_id")
 
     @declared_attr
     def updated_by_id(self):
         return Column(INTEGER, ForeignKey("users.id"), comment="fk for user's table")
-    
+
     @declared_attr
     def updated_by(self):
-        return relationship("User", foreign_keys=["updated_by_id"])
-
+        return relationship("User", foreign_keys=f"{self.__name__}.updated_by_id")
 
     added_by_id: "Column[INTEGER]"
     added_by: "RelationshipProperty[User]"
     updated_by_id: "Column[INTEGER]"
     updated_by: "RelationshipProperty[User]"
-
 
     def __init__(self, **kwargs) -> None:
 
