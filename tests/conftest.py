@@ -2,11 +2,13 @@ import os
 from typing import List, TypedDict
 
 import pytest
+from faker import Faker
+from flask.app import Flask
+from flask.testing import FlaskClient
+
 from app import create_app
 from app.database import db
 from app.settings import TestConfig
-from flask.app import Flask
-from flask.testing import FlaskClient
 
 from .helpers import ExtendedClient, create_user
 
@@ -22,6 +24,11 @@ class UserDict(TypedDict):
     first_name: str
     last_name: str
     roles: List[str]
+
+
+@pytest.fixture(scope="session")
+def faker() -> Faker:
+    return Faker()
 
 
 @pytest.fixture()

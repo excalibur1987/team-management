@@ -1,9 +1,10 @@
 import pytest
+from flask import Flask
+from flask_principal import Identity, Permission, RoleNeed
+
 from app.exceptions import InvalidUsage
 from app.utils import g
 from app.utils.decorators import check_roles, has_roles
-from flask import Flask
-from flask_principal import Identity, Permission, RoleNeed
 
 
 @pytest.fixture(scope="module")
