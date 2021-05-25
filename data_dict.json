@@ -1,4 +1,419 @@
 {
+  "asset_permissions": {
+    "type": "table",
+    "model": {
+      "name": "AssetPermission",
+      "path": "app/apis/v1/asset_storage/models/_AssetPermission.py"
+    },
+    "description": "permissions on assets granted to users",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "asset_id",
+        "type": "INTEGER",
+        "comment": "asset reference id",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "comment": "user's id",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "can_update",
+        "type": "BOOLEAN",
+        "comment": "if the user can update the asset",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "can_delete",
+        "type": "BOOLEAN",
+        "comment": "if the user can delete the asset",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_asset_permissions_asset_id_asset_storage",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "asset_id"
+        ]
+      },
+      {
+        "name": "fk_asset_permissions_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
+        ]
+      },
+      {
+        "name": "pk_asset_permissions",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "asset_storage": {
+    "type": "table",
+    "model": {
+      "name": "AssetStorage",
+      "path": "app/apis/v1/asset_storage/models/_AssetStorage.py"
+    },
+    "description": "holds references to assets uploaded by users",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "ref_id",
+        "type": "VARCHAR",
+        "comment": "unique id for file",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "title",
+        "type": "VARCHAR",
+        "comment": "file title with extension",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "url",
+        "type": "VARCHAR",
+        "comment": "file url",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_added",
+        "type": "DATETIME",
+        "comment": "row timestamp",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_updated",
+        "type": "DATETIME",
+        "comment": "timestamp for last updated",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "added_by_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "updated_by_id",
+        "type": "INTEGER",
+        "comment": "fk for user's table",
+        "primary/foreign": "foreign"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_asset_storage_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
+        ]
+      },
+      {
+        "name": "fk_asset_storage_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
+        ]
+      },
+      {
+        "name": "pk_asset_storage",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "uq_asset_storage_ref_id",
+        "type": "UniqueConstraint",
+        "columns": [
+          "ref_id"
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "type": "table",
+    "model": {
+      "name": "Project",
+      "path": "app/apis/v1/projects/models/_Project.py"
+    },
+    "description": "holds references to assets uploaded by users",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "cancelled_at",
+        "type": "DATETIME",
+        "comment": "timestamp for cancellation of record",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "title",
+        "type": "VARCHAR",
+        "comment": "Project's Title",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "description",
+        "type": "VARCHAR",
+        "comment": "Description for created project",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "is_completed",
+        "type": "BOOLEAN",
+        "comment": "flags the project as complete",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "start_date",
+        "type": "DATE",
+        "comment": "timestamp for project's start date",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "time_frame",
+        "type": "INTEGER",
+        "comment": "estimated time-frame for project in days",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_added",
+        "type": "DATETIME",
+        "comment": "row timestamp",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_updated",
+        "type": "DATETIME",
+        "comment": "timestamp for last updated",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "added_by_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "updated_by_id",
+        "type": "INTEGER",
+        "comment": "fk for user's table",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "cancelled_by_id",
+        "type": "INTEGER",
+        "comment": "fk for user's table",
+        "primary/foreign": "foreign"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_projects_cancelled_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "cancelled_by_id"
+        ]
+      },
+      {
+        "name": "fk_projects_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
+        ]
+      },
+      {
+        "name": "fk_projects_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
+        ]
+      },
+      {
+        "name": "pk_projects",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "project_asset": {
+    "type": "table",
+    "model": {
+      "name": "ProjectAsset",
+      "path": "app/apis/v1/projects/models/_ProjectAsset.py"
+    },
+    "description": "references for assets available to projects",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "project_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "asset_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "date_added",
+        "type": "DATETIME",
+        "comment": "row timestamp",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_updated",
+        "type": "DATETIME",
+        "comment": "timestamp for last updated",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "added_by_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "updated_by_id",
+        "type": "INTEGER",
+        "comment": "fk for user's table",
+        "primary/foreign": "foreign"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_project_asset_asset_id_asset_storage",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "asset_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_project_id_projects",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "project_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
+        ]
+      },
+      {
+        "name": "pk_project_asset",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "project_users": {
+    "type": "table",
+    "model": {
+      "name": "ProjectUser",
+      "path": "app/apis/v1/projects/models/_ProjectUser.py"
+    },
+    "description": "holds references to users assigned to a project",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "project_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "is_active",
+        "type": "BOOLEAN",
+        "comment": "flags the validity of user in the project",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "role_id",
+        "type": "SMALLINT",
+        "comment": "user's role in this project",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_project_users_project_id_projects",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "project_id"
+        ]
+      },
+      {
+        "name": "fk_project_users_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
+        ]
+      },
+      {
+        "name": "pk_project_users",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
   "roles": {
     "type": "table",
     "model": {
@@ -239,17 +654,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_user_roles_user_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
-      },
-      {
         "name": "fk_user_roles_role_id_roles",
         "type": "ForeignKeyConstraint",
         "columns": [
           "role_id"
+        ]
+      },
+      {
+        "name": "fk_user_roles_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
         ]
       },
       {
