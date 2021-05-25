@@ -40,17 +40,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_asset_permissions_asset_id_asset_storage",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "asset_id"
-        ]
-      },
-      {
         "name": "fk_asset_permissions_user_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
           "user_id"
+        ]
+      },
+      {
+        "name": "fk_asset_permissions_asset_id_asset_storage",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "asset_id"
         ]
       },
       {
@@ -150,6 +150,50 @@
       }
     ]
   },
+  "entities": {
+    "type": "table",
+    "model": {
+      "name": "Entity",
+      "path": "app/apis/v1/entities/models/_Entity.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "comment": "entity name",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "description",
+        "type": "VARCHAR",
+        "comment": "short discription of the entity",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "pk_entities",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "uq_entities_name",
+        "type": "UniqueConstraint",
+        "columns": [
+          "name"
+        ]
+      }
+    ]
+  },
   "projects": {
     "type": "table",
     "model": {
@@ -233,6 +277,13 @@
     ],
     "constraints": [
       {
+        "name": "fk_projects_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
+        ]
+      },
+      {
         "name": "fk_projects_cancelled_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
@@ -244,13 +295,6 @@
         "type": "ForeignKeyConstraint",
         "columns": [
           "updated_by_id"
-        ]
-      },
-      {
-        "name": "fk_projects_added_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
         ]
       },
       {
@@ -315,6 +359,13 @@
     ],
     "constraints": [
       {
+        "name": "fk_project_asset_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
+        ]
+      },
+      {
         "name": "fk_project_asset_asset_id_asset_storage",
         "type": "ForeignKeyConstraint",
         "columns": [
@@ -333,13 +384,6 @@
         "type": "ForeignKeyConstraint",
         "columns": [
           "added_by_id"
-        ]
-      },
-      {
-        "name": "fk_project_asset_updated_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
         ]
       },
       {
@@ -392,17 +436,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_project_users_project_id_projects",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "project_id"
-        ]
-      },
-      {
         "name": "fk_project_users_user_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
           "user_id"
+        ]
+      },
+      {
+        "name": "fk_project_users_project_id_projects",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "project_id"
         ]
       },
       {
@@ -431,19 +475,82 @@
       {
         "name": "name",
         "type": "VARCHAR",
-        "comment": null,
+        "comment": "role name",
         "primary/foreign": "n/a"
       },
       {
         "name": "description",
         "type": "VARCHAR",
-        "comment": null,
+        "comment": "short discription of the role",
         "primary/foreign": "n/a"
       }
     ],
     "constraints": [
       {
         "name": "pk_roles",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "role_entity_permissions": {
+    "type": "table",
+    "model": {
+      "name": "RoleEntityPermission",
+      "path": "app/apis/v1/roles/models/_RoleEntityPermission.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "entity_id",
+        "type": "INTEGER",
+        "comment": "entity's table foreign key",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "role_id",
+        "type": "INTEGER",
+        "comment": "role's table foreign key",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "can_create",
+        "type": "BOOLEAN",
+        "comment": "can create flag",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "can_edit",
+        "type": "BOOLEAN",
+        "comment": "can edit flag",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_role_entity_permissions_role_id_roles",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "role_id"
+        ]
+      },
+      {
+        "name": "fk_role_entity_permissions_entity_id_entities",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "entity_id"
+        ]
+      },
+      {
+        "name": "pk_role_entity_permissions",
         "type": "PrimaryKeyConstraint",
         "columns": [
           "id"
@@ -625,6 +732,69 @@
       }
     ]
   },
+  "user_entity_permissions": {
+    "type": "table",
+    "model": {
+      "name": "UserEntityPermission",
+      "path": "app/apis/v1/users/models/_UserEntityPermission.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "entity_id",
+        "type": "INTEGER",
+        "comment": "entity's table foreign key",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "comment": "user's table foreign key",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "can_create",
+        "type": "BOOLEAN",
+        "comment": "can create flag",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "can_edit",
+        "type": "BOOLEAN",
+        "comment": "can edit flag",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_user_entity_permissions_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
+        ]
+      },
+      {
+        "name": "fk_user_entity_permissions_entity_id_entities",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "entity_id"
+        ]
+      },
+      {
+        "name": "pk_user_entity_permissions",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
   "user_roles": {
     "type": "table",
     "model": {
@@ -654,17 +824,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_user_roles_role_id_roles",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "role_id"
-        ]
-      },
-      {
         "name": "fk_user_roles_user_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
           "user_id"
+        ]
+      },
+      {
+        "name": "fk_user_roles_role_id_roles",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "role_id"
         ]
       },
       {
