@@ -5,6 +5,7 @@ from flask_jwt_extended.exceptions import CSRFError
 from flask_jwt_extended.jwt_manager import JWTManager
 from flask_principal import (
     Identity,
+    Need,
     RoleNeed,
     UserNeed,
     identity_changed,
@@ -12,6 +13,7 @@ from flask_principal import (
 )
 
 from app.exceptions import InvalidUsage, UserExceptions
+from app.utils.helpers import get_user_entity_permissions
 
 if TYPE_CHECKING:
     from app.apis.v1.users.models import User
@@ -44,6 +46,18 @@ def jwt_handlers(jwt: JWTManager, app: Flask):
         # identity with the roles that the user provides
         for role in user.roles:
             identity.provides.add(RoleNeed(role.name))
+
+        # gets entity permissions granted to user or user's roles and add valid permissions
+        entity_permissions = get_user_entity_permissions(user_id)
+
+        for entity in entity_permissions:
+            for permission in [
+                Need(entity.entity_name, perm)
+                for perm in ["create", "edit"]
+                if getattr(entity, perm)
+            ]:
+                identity.provides.add(permission)
+
         identity_changed.send(app, identity=identity)
 
         return user

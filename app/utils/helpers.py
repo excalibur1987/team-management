@@ -7,15 +7,15 @@ from typing import (
     Dict,
     List,
     Literal,
+    NamedTuple,
     Sequence,
     Type,
     TypedDict,
     TypeVar,
 )
 
-from flask_migrate import revision
-
 from app.database import BaseModel, ExtendedModel, db
+from flask_migrate import revision
 
 T = TypeVar("T")
 
@@ -193,3 +193,44 @@ def generate_op(changed_views: List[Dict[Literal["new_ddl", "old_ddl"], str]]) -
             )
     except AssertionError:
         print("Error matching revision to pattern")
+
+
+def get_user_entity_permissions(user_id: int):
+    """returns list of user permissions on entities"""
+
+    from app.apis.v1.entities.models import Entity
+    from app.apis.v1.roles.models import RoleEntityPermission
+    from app.apis.v1.users.models import UserEntityPermission, UserRoles
+
+    user_permissions_cte = (
+        UserEntityPermission.query.join(Entity, UserEntityPermission.entity_id == Entity.id)
+        .with_entities(
+            Entity.name.label("entity_name"),
+            UserEntityPermission.can_create.label("create"),
+            UserEntityPermission.can_edit.label("edit"),
+        )
+        .filter(UserEntityPermission.user_id == user_id)
+        .cte()
+    )
+
+    role_permissions_cte = (
+        RoleEntityPermission.query.join(Entity, RoleEntityPermission.entity_id == Entity.id)
+        .join(UserRoles, UserRoles.role_id == RoleEntityPermission.role_id)
+        .with_entities(
+            Entity.name.label("entity_name"),
+            RoleEntityPermission.can_create.label("create"),
+            RoleEntityPermission.can_edit.label("edit"),
+        )
+        .filter(UserRoles.user_id == user_id)
+        .cte()
+    )
+
+    class ResultTuple(NamedTuple):
+        entity_name: str
+        create: bool
+        edit: bool
+
+    unioned_entity_permissions: List[ResultTuple] = (
+        db.session.query(role_permissions_cte).union(user_permissions_cte.select()).all()
+    )
+    return unioned_entity_permissions
