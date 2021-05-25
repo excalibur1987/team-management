@@ -9,7 +9,7 @@ from sqlalchemy import Column, and_
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.mutable import Mutable
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Query, relationship
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.schema import ForeignKey, MetaData, Table
 from sqlalchemy.sql.sqltypes import INTEGER, DateTime
@@ -36,6 +36,8 @@ T = TypeVar("T")
 class ExtendedModel(Model):
     __table__: Table
     __tablename__: str
+    query: Query
+
     id = Column(
         INTEGER, primary_key=True, nullable=False, comment="Unique row identifier"
     )
@@ -129,6 +131,7 @@ if TYPE_CHECKING:
     from flask_sqlalchemy.model import Model
 
     BaseModel: Type[ExtendedModel] = db.make_declarative_base(ExtendedModel)
+
 else:
     BaseModel = db.Model
 
