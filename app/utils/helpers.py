@@ -14,8 +14,9 @@ from typing import (
     TypeVar,
 )
 
-from app.database import BaseModel, ExtendedModel, db
 from flask_migrate import revision
+
+from app.database import BaseModel, ExtendedModel, db
 
 T = TypeVar("T")
 
@@ -53,6 +54,16 @@ def argument_list_type(type_: Type[X]):
         return [type_(val_) for val_ in val]  # type: ignore
 
     return checker
+
+
+def unique_value_converter(model: Type["ExtendedModel"], key: str, type_: Type[X]):
+    def converter(val: Any, name: str = "") -> X:
+        val = type_(val)
+        if model.query.filter(getattr(model, key) == val).count() > 0:
+            raise TypeError(f"'{val}' is not allowed")
+        return val
+
+    return converter
 
 
 class ColumnData(TypedDict):

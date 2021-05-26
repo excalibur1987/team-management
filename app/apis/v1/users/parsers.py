@@ -1,6 +1,10 @@
 import werkzeug
 from flask_restx.reqparse import RequestParser
 
+from app.utils.helpers import unique_value_converter
+
+from .models import User
+
 user_login_parser = RequestParser()
 user_login_parser.add_argument(
     "username",
@@ -34,7 +38,7 @@ user_info_parser.add_argument(
     required=False,
 ).add_argument(
     "email",
-    type=str,
+    type=unique_value_converter(User, "email", str),
     location="form",
     required=False,
 ).add_argument(
@@ -65,7 +69,8 @@ user_info_parser.add_argument(
 user_parser = user_info_parser.copy().add_argument(
     "username",
     dest="username",
-    type=str,
+    type=unique_value_converter(User, "username", str),
+    required=True,
     location="form",
 )
 
