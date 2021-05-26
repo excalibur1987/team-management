@@ -13,7 +13,7 @@ from flask_jwt_extended.utils import (
     set_access_cookies,
     unset_jwt_cookies,
 )
-from flask_principal import RoleNeed
+from flask_principal import Permission, RoleNeed
 from flask_restx import Resource, marshal
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.functions import func
@@ -26,6 +26,7 @@ from app.utils.extended_objects import ExtendedNameSpace
 from app.utils.file_handler import FileHandler
 from app.utils.parsers import offset_parser
 
+from ..roles.models import Role
 from .models import Session, User
 from .parsers import user_info_parser, user_login_parser, user_parser
 from .serializers import session_serializer, user_serializer
@@ -62,9 +63,12 @@ class UsersResource(Resource):
     def post(self):
         """Creates new user - requires admin permission-."""
         args = user_parser.parse_args()
-
+        # if User.query.filter(or_(User.username==args.get("username"), User.email==args.get("email"))).count() > 0:
+        #     raise InvalidUsage.custom_error("username")
         user = User(**args)
         user.save(True)
+
+        user.add_roles(Role.get(name="user"))
         return user
 
 
@@ -120,7 +124,7 @@ class UserResource(Resource):
     @api.expect(
         user_login_parser.copy()
         .replace_argument(
-            "username",
+            "username", required=True, location="form", help="You must provide username"
         )
         .add_argument(
             "confirm",
@@ -136,7 +140,7 @@ class UserResource(Resource):
         user = User.get(id=user_id)
 
         if user_id != current_user.id:
-            if g.identity.provides(RoleNeed("admin")):
+            if g.identity.can(Permission(RoleNeed("admin"))):
                 return self.admin_delete_user(user)
             raise InvalidUsage.user_not_authorized()
         if (
@@ -149,6 +153,11 @@ class UserResource(Resource):
         response: Response = jsonify({"message": "User Account deleted succefully!"})
         unset_jwt_cookies(response)
         return response
+
+    def admin_delete_user(self, user: User):
+        user.delete()
+
+        return {}
 
 
 class Logout(Resource):
