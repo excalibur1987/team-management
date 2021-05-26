@@ -233,15 +233,27 @@
         "primary/foreign": "n/a"
       },
       {
+        "name": "is_public",
+        "type": "BOOLEAN",
+        "comment": "flags the project as public",
+        "primary/foreign": "n/a"
+      },
+      {
         "name": "start_date",
         "type": "DATE",
-        "comment": "timestamp for project's start date",
+        "comment": "project's start date",
         "primary/foreign": "n/a"
       },
       {
         "name": "time_frame",
         "type": "INTEGER",
         "comment": "estimated time-frame for project in days",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "logo",
+        "type": "VARCHAR",
+        "comment": "url to project's logo",
         "primary/foreign": "n/a"
       },
       {
@@ -359,13 +371,6 @@
     ],
     "constraints": [
       {
-        "name": "fk_project_asset_updated_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
-        ]
-      },
-      {
         "name": "fk_project_asset_asset_id_asset_storage",
         "type": "ForeignKeyConstraint",
         "columns": [
@@ -384,6 +389,13 @@
         "type": "ForeignKeyConstraint",
         "columns": [
           "added_by_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
         ]
       },
       {

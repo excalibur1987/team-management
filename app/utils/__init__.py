@@ -1,4 +1,7 @@
+from typing import TYPE_CHECKING
+
 from flask import g
+from flask_jwt_extended import current_user
 from flask_principal import Identity
 
 from .decorators import has_roles
@@ -7,9 +10,14 @@ from .file_handler import FileHandler
 from .helpers import chain
 from .url_w_args import UrlWArgs
 
+if TYPE_CHECKING:
+    from app.apis.v1.users.models import User  # NOQA
+
 
 class GlobalObject(object):
     identity: Identity
 
 
 g: GlobalObject
+
+current_user: "User"
