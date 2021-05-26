@@ -1,15 +1,16 @@
 import re
 from typing import TYPE_CHECKING, Any, List, Union
 
-from app.database import BaseModel, db
-from app.exceptions import UserExceptions
-from app.utils.file_handler import FileHandler
 from flask import current_app
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import cast
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import BOOLEAN, String
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app.database import BaseModel, db
+from app.exceptions import UserExceptions
+from app.utils.file_handler import FileHandler
 
 if TYPE_CHECKING:
     from ...entities.models import Entity
@@ -159,6 +160,8 @@ class User(BaseModel):
     def add_entity(self, entity: "Entity", create: bool = False, edit: bool = False):
         from ._UserEntityPermission import UserEntityPermission
 
-        permission = UserEntityPermission(entity=entity, user=self, create=create, edit=edit)
+        permission = UserEntityPermission(
+            entity=entity, user=self, create=create, edit=edit
+        )
         db.session.add(permission)
         db.session.commit()

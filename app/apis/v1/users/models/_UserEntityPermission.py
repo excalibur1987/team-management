@@ -1,11 +1,12 @@
 from typing import TYPE_CHECKING
 
-from app.apis.v1.entities.models import Entity
-from app.database import BaseModel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import cast
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import BOOLEAN, INTEGER
+
+from app.apis.v1.entities.models import Entity
+from app.database import BaseModel
 
 if TYPE_CHECKING:
     from ._User import User
@@ -22,7 +23,12 @@ class UserEntityPermission(BaseModel):
         comment="entity's table foreign key",
     )
     entity = relationship("Entity")
-    user_id = Column(INTEGER, ForeignKey("users.id"), nullable=False, comment="user's table foreign key")
+    user_id = Column(
+        INTEGER,
+        ForeignKey("users.id"),
+        nullable=False,
+        comment="user's table foreign key",
+    )
     can_create = Column(
         BOOLEAN,
         nullable=False,
@@ -37,7 +43,11 @@ class UserEntityPermission(BaseModel):
     )
 
     def __init__(
-        self, entity: "Entity", user: "User", can_create: bool = False, can_edit: bool = False
+        self,
+        entity: "Entity",
+        user: "User",
+        can_create: bool = False,
+        can_edit: bool = False,
     ) -> None:
         self.entity_id = entity.id
         self.user_id = user.id

@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING
 
-from app.database import BaseModel, DatedModel
-from app.utils import FileHandler
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import String
 from sqlalchemy.util.langhelpers import hybridproperty
 from werkzeug import datastructures
+
+from app.database import BaseModel, DatedModel
+from app.utils import FileHandler
 
 if TYPE_CHECKING:
     from app.apis.v1.users.models import User  # NOQA

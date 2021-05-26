@@ -203,7 +203,9 @@ def get_user_entity_permissions(user_id: int):
     from app.apis.v1.users.models import UserEntityPermission, UserRoles
 
     user_permissions_cte = (
-        UserEntityPermission.query.join(Entity, UserEntityPermission.entity_id == Entity.id)
+        UserEntityPermission.query.join(
+            Entity, UserEntityPermission.entity_id == Entity.id
+        )
         .with_entities(
             Entity.name.label("entity_name"),
             UserEntityPermission.can_create.label("create"),
@@ -214,7 +216,9 @@ def get_user_entity_permissions(user_id: int):
     )
 
     role_permissions_cte = (
-        RoleEntityPermission.query.join(Entity, RoleEntityPermission.entity_id == Entity.id)
+        RoleEntityPermission.query.join(
+            Entity, RoleEntityPermission.entity_id == Entity.id
+        )
         .join(UserRoles, UserRoles.role_id == RoleEntityPermission.role_id)
         .with_entities(
             Entity.name.label("entity_name"),
@@ -231,6 +235,8 @@ def get_user_entity_permissions(user_id: int):
         edit: bool
 
     unioned_entity_permissions: List[ResultTuple] = (
-        db.session.query(role_permissions_cte).union(user_permissions_cte.select()).all()
+        db.session.query(role_permissions_cte)
+        .union(user_permissions_cte.select())
+        .all()
     )
     return unioned_entity_permissions

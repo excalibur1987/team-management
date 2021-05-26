@@ -1,10 +1,11 @@
+from flask_jwt_extended.view_decorators import jwt_required
+from flask_restx import Resource, fields
+from flask_restx.reqparse import RequestParser
+
 from app.exceptions import InvalidUsage
 from app.utils.decorators import has_roles
 from app.utils.extended_objects import ExtendedNameSpace
 from app.utils.parsers import offset_parser
-from flask_jwt_extended.view_decorators import jwt_required
-from flask_restx import Resource, fields
-from flask_restx.reqparse import RequestParser
 
 from .models import Entity
 

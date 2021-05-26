@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING
 
-from app.database import BaseModel
 from sqlalchemy.sql.schema import Column, ForeignKeyConstraint
 from sqlalchemy.sql.sqltypes import INTEGER
+
+from app.database import BaseModel
 
 if TYPE_CHECKING:
     from app.apis.v1.roles.models._Role import Role

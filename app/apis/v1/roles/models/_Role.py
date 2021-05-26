@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING
 
-from app.database import BaseModel, db
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import String
+
+from app.database import BaseModel, db
 
 if TYPE_CHECKING:
     from ...entities.models import Entity
@@ -22,7 +23,9 @@ class Role(BaseModel):
         comment="short discription of the role",
     )
 
-    entity_permissions = relationship("RoleEntityPermission",)
+    entity_permissions = relationship(
+        "RoleEntityPermission",
+    )
 
     def __init__(self, name: str, description: str) -> None:
         self.name = name
@@ -31,6 +34,8 @@ class Role(BaseModel):
     def add_entity(self, entity: "Entity", create: bool = False, edit: bool = False):
         from ._RoleEntityPermission import RoleEntityPermission  # NOQA
 
-        permission = RoleEntityPermission(entity=entity, role=self, create=create, edit=edit)
+        permission = RoleEntityPermission(
+            entity=entity, role=self, create=create, edit=edit
+        )
         db.session.add(permission)
         db.session.commit()

@@ -1,6 +1,7 @@
-from app.database import BaseModel
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import String
+
+from app.database import BaseModel
 
 
 class Entity(BaseModel):

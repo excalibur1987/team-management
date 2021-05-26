@@ -1,9 +1,10 @@
 from functools import wraps
 from typing import Callable, Iterable, List, Literal, Union
 
-from app.exceptions import InvalidUsage
 from flask import g
 from flask_principal import Identity, Need, Permission, RoleNeed
+
+from app.exceptions import InvalidUsage
 
 
 def check_roles(
@@ -46,7 +47,9 @@ def has_roles(*args: Iterable[str]):
     return wrapper
 
 
-def has_permission(entity: str, permissions: List[Literal['create', 'edit']] = ['create']):
+def has_permission(
+    entity: str, permissions: List[Literal["create", "edit"]] = ["create"]
+):
     """checks if user has required permissions for this entity"""
 
     permissions = [Permission(Need(entity, perm)) for perm in permissions]
