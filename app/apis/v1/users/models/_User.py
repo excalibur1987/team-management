@@ -154,7 +154,8 @@ class User(BaseModel):
 
     def delete(self, persist=False):
         """Delete user's record"""
-        self.photo.delete()
+        if self.photo:
+            self.photo.delete()
         super().delete(persist=persist)
 
     def add_entity(self, entity: "Entity", create: bool = False, edit: bool = False):
