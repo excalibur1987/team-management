@@ -289,10 +289,10 @@
     ],
     "constraints": [
       {
-        "name": "fk_projects_added_by_id_users",
+        "name": "fk_projects_updated_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
-          "added_by_id"
+          "updated_by_id"
         ]
       },
       {
@@ -303,10 +303,10 @@
         ]
       },
       {
-        "name": "fk_projects_updated_by_id_users",
+        "name": "fk_projects_added_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
-          "updated_by_id"
+          "added_by_id"
         ]
       },
       {
@@ -548,17 +548,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_role_entity_permissions_role_id_roles",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "role_id"
-        ]
-      },
-      {
         "name": "fk_role_entity_permissions_entity_id_entities",
         "type": "ForeignKeyConstraint",
         "columns": [
           "entity_id"
+        ]
+      },
+      {
+        "name": "fk_role_entity_permissions_role_id_roles",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "role_id"
         ]
       },
       {
