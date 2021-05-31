@@ -81,7 +81,7 @@ class ExtendedModel(Model):
             if not key.startswith("_"):
                 yield key, getattr(self, key)
 
-    def save(self, persist=True):
+    def save(self, persist=False):
         """Saves instance to database
 
         Args:

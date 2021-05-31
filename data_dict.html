@@ -409,6 +409,154 @@
       </table>
     </div>
     
+    <div class="sql-table-contianer" data-model="ErrorLog" >
+      <h2>
+        <span class="table-name">error_log</span>
+        <sub>TABLE</sub>
+      </h2>
+
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >ErrorLog</a
+        >
+      </p>
+      <div class="wrapper">
+        <h2>Description:</h2>
+        <p>None</p>
+      </div>
+      
+      <table class="col-details">
+        <thead>
+          <th>Database Field Name</th>
+          <th>Data Type</th>
+          <th>Description</th>
+          <th>Primary/Foreign</th>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>id</td>
+            <td>INTEGER</td>
+            <td>Unique row identifier</td>
+            <td>
+              primary
+            </td>
+          </tr>
+          
+          <tr>
+            <td>code</td>
+            <td>VARCHAR</td>
+            <td>Application Error identifier code</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>user_id</td>
+            <td>INTEGER</td>
+            <td>logged in user</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>message</td>
+            <td>VARCHAR</td>
+            <td>error message</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>stack_trace</td>
+            <td>VARCHAR</td>
+            <td>error stack trace</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>date_added</td>
+            <td>DATETIME</td>
+            <td>row timestamp</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>added_by_id</td>
+            <td>INTEGER</td>
+            <td>None</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>session_id</td>
+            <td>INTEGER</td>
+            <td>None</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+      <table class="table-constraints">
+        <thead>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Columns</th>
+        </thead>
+        <tbody>
+             
+              <tr>
+                
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_session_id_sessions
+                </td>
+                <td colspan="1">session_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_error_log
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
+        </tbody>
+      </table>
+    </div>
+    
     <div class="sql-table-contianer" data-model="Project" >
       <h2>
         <span class="table-name">projects</span>
@@ -1034,17 +1182,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_role_entity_permissions_entity_id_entities
+                  fk_role_entity_permissions_role_id_roles
                 </td>
-                <td colspan="1">entity_id</td>
+                <td colspan="1">role_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_role_entity_permissions_role_id_roles
+                  fk_role_entity_permissions_entity_id_entities
                 </td>
-                <td colspan="1">role_id</td>
+                <td colspan="1">entity_id</td>
               </tr>
             
               <tr>
@@ -1344,17 +1492,17 @@
                 <td rowspan="2" colspan="1">UniqueConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  uq_users_username
+                  uq_users_email
                 </td>
-                <td colspan="1">username</td>
+                <td colspan="1">email</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  uq_users_email
+                  uq_users_username
                 </td>
-                <td colspan="1">email</td>
+                <td colspan="1">username</td>
               </tr>
            
         </tbody>
@@ -1542,17 +1690,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_roles_user_id_users
+                  fk_user_roles_role_id_roles
                 </td>
-                <td colspan="1">user_id</td>
+                <td colspan="1">role_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_roles_role_id_roles
+                  fk_user_roles_user_id_users
                 </td>
-                <td colspan="1">role_id</td>
+                <td colspan="1">user_id</td>
               </tr>
             
               <tr>

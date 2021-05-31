@@ -11,11 +11,12 @@ from .helpers import chain
 from .url_w_args import UrlWArgs
 
 if TYPE_CHECKING:
-    from app.apis.v1.users.models import User  # NOQA
+    from app.apis.v1.users.models import Session, User  # NOQA
 
 
 class GlobalObject(object):
     identity: Identity
+    session: "Session"
 
 
 g: GlobalObject
