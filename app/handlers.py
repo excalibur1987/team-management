@@ -15,6 +15,7 @@ from flask_principal import (
 
 from app.apis.v1.app_logging.models import ErrorLog
 from app.exceptions import InvalidUsage, UserExceptions
+from app.utils import g
 from app.utils.helpers import get_user_entity_permissions
 
 if TYPE_CHECKING:
@@ -26,6 +27,31 @@ def on_identity_loaded(sender, identity: int):
     pass
 
 
+def generate_principal_identity(user: "User"):
+
+    user_id = user.id
+    identity = Identity(user_id)
+    identity.provides.add(UserNeed(user_id))
+
+    # Assuming the User model has a list of roles, update the
+    # identity with the roles that the user provides
+    for role in user.roles:
+        identity.provides.add(RoleNeed(role.name))
+
+    # gets entity permissions granted to user or user's roles and add valid permissions
+    entity_permissions = get_user_entity_permissions(user_id)
+
+    for entity in entity_permissions:
+        for permission in [
+            Need(entity.entity_name, perm)
+            for perm in ["create", "edit"]
+            if getattr(entity, perm)
+        ]:
+            identity.provides.add(permission)
+
+    return identity
+
+
 def jwt_handlers(jwt: JWTManager, app: Flask):
     def user_identity_lookup(user: "User"):
         return user.id
@@ -35,31 +61,15 @@ def jwt_handlers(jwt: JWTManager, app: Flask):
         from app.apis.v1.users.models import Session, User
 
         session = Session.get(token=jwt_data["jti"], user_id=jwt_data["user"])
+        g.session = session
         if not session:
             raise InvalidUsage.invalid_session()
         user_id = jwt_data["user"]
-        user = User.get(user_id)
+        user = User.get(id=user_id)
         if not user or not user.active:
             raise InvalidUsage.user_not_authorized()
-        identity = Identity(user_id)
-        identity.provides.add(UserNeed(user_id))
 
-        # Assuming the User model has a list of roles, update the
-        # identity with the roles that the user provides
-        for role in user.roles:
-            identity.provides.add(RoleNeed(role.name))
-
-        # gets entity permissions granted to user or user's roles and add valid permissions
-        entity_permissions = get_user_entity_permissions(user_id)
-
-        for entity in entity_permissions:
-            for permission in [
-                Need(entity.entity_name, perm)
-                for perm in ["create", "edit"]
-                if getattr(entity, perm)
-            ]:
-                identity.provides.add(permission)
-
+        identity = generate_principal_identity(user)
         identity_changed.send(app, identity=identity)
 
         return user
