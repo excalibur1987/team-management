@@ -40,25 +40,19 @@
     ],
     "constraints": [
       {
-        "name": "fk_asset_permissions_user_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
-      },
-      {
         "name": "fk_asset_permissions_asset_id_asset_storage",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "asset_id"
-        ]
+        "columns": ["asset_id"]
+      },
+      {
+        "name": "fk_asset_permissions_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["user_id"]
       },
       {
         "name": "pk_asset_permissions",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -121,32 +115,24 @@
     ],
     "constraints": [
       {
-        "name": "fk_asset_storage_updated_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
-        ]
-      },
-      {
         "name": "fk_asset_storage_added_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
-        ]
+        "columns": ["added_by_id"]
+      },
+      {
+        "name": "fk_asset_storage_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["updated_by_id"]
       },
       {
         "name": "pk_asset_storage",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       },
       {
         "name": "uq_asset_storage_ref_id",
         "type": "UniqueConstraint",
-        "columns": [
-          "ref_id"
-        ]
+        "columns": ["ref_id"]
       }
     ]
   },
@@ -181,16 +167,12 @@
       {
         "name": "pk_entities",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       },
       {
         "name": "uq_entities_name",
         "type": "UniqueConstraint",
-        "columns": [
-          "name"
-        ]
+        "columns": ["name"]
       }
     ]
   },
@@ -253,32 +235,196 @@
     ],
     "constraints": [
       {
+        "name": "fk_error_log_session_id_sessions",
+        "type": "ForeignKeyConstraint",
+        "columns": ["session_id"]
+      },
+      {
         "name": "fk_error_log_added_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
-        ]
+        "columns": ["added_by_id"]
       },
       {
         "name": "fk_error_log_user_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
-      },
-      {
-        "name": "fk_error_log_session_id_sessions",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "session_id"
-        ]
+        "columns": ["user_id"]
       },
       {
         "name": "pk_error_log",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
+      }
+    ]
+  },
+  "organizations": {
+    "type": "table",
+    "model": {
+      "name": "Organization",
+      "path": "app/apis/v1/organization/models/_Organization.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "comment": "Unique name of Organization",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "description",
+        "type": "VARCHAR",
+        "comment": "Short description of organization",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "addr_line1",
+        "type": "VARCHAR",
+        "comment": "Address line 1",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "addr_line2",
+        "type": "VARCHAR",
+        "comment": "Address line 1",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "country",
+        "type": "VARCHAR",
+        "comment": "Country's ISO code",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "city",
+        "type": "VARCHAR",
+        "comment": "City's name",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "contact_email",
+        "type": "VARCHAR",
+        "comment": "",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "contact_phone",
+        "type": "VARCHAR",
+        "comment": "",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "contact_user_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "slug",
+        "type": "VARCHAR",
+        "comment": "identifier slug for organization",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_added",
+        "type": "DATETIME",
+        "comment": "row timestamp",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_updated",
+        "type": "DATETIME",
+        "comment": "timestamp for last updated",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "added_by_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "updated_by_id",
+        "type": "INTEGER",
+        "comment": "fk for user's table",
+        "primary/foreign": "foreign"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_organizations_contact_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["contact_user_id"]
+      },
+      {
+        "name": "fk_organizations_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["added_by_id"]
+      },
+      {
+        "name": "fk_organizations_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["updated_by_id"]
+      },
+      {
+        "name": "pk_organizations",
+        "type": "PrimaryKeyConstraint",
+        "columns": ["id"]
+      },
+      {
+        "name": "uq_organizations_name",
+        "type": "UniqueConstraint",
+        "columns": ["name"]
+      },
+      {
+        "name": "uq_organizations_slug",
+        "type": "UniqueConstraint",
+        "columns": ["slug"]
+      }
+    ]
+  },
+  "organization_departments": {
+    "type": "table",
+    "model": {
+      "name": "OrganizationDepartment",
+      "path": "app/apis/v1/organization/models/_OrganizationDepartment.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "org_id",
+        "type": "INTEGER",
+        "comment": "",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "comment": "department's name",
+        "primary/foreign": "n/a"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_organization_departments_org_id_organizations",
+        "type": "ForeignKeyConstraint",
+        "columns": ["org_id"]
+      },
+      {
+        "name": "pk_organization_departments",
+        "type": "PrimaryKeyConstraint",
+        "columns": ["id"]
       }
     ]
   },
@@ -377,32 +523,24 @@
     ],
     "constraints": [
       {
-        "name": "fk_projects_cancelled_by_id_users",
+        "name": "fk_projects_updated_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "cancelled_by_id"
-        ]
+        "columns": ["updated_by_id"]
       },
       {
         "name": "fk_projects_added_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
-        ]
+        "columns": ["added_by_id"]
       },
       {
-        "name": "fk_projects_updated_by_id_users",
+        "name": "fk_projects_cancelled_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
-        ]
+        "columns": ["cancelled_by_id"]
       },
       {
         "name": "pk_projects",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -459,39 +597,29 @@
     ],
     "constraints": [
       {
+        "name": "fk_project_asset_asset_id_asset_storage",
+        "type": "ForeignKeyConstraint",
+        "columns": ["asset_id"]
+      },
+      {
         "name": "fk_project_asset_added_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
-        ]
+        "columns": ["added_by_id"]
       },
       {
         "name": "fk_project_asset_updated_by_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
-        ]
-      },
-      {
-        "name": "fk_project_asset_asset_id_asset_storage",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "asset_id"
-        ]
+        "columns": ["updated_by_id"]
       },
       {
         "name": "fk_project_asset_project_id_projects",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "project_id"
-        ]
+        "columns": ["project_id"]
       },
       {
         "name": "pk_project_asset",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -536,25 +664,19 @@
     ],
     "constraints": [
       {
-        "name": "fk_project_users_user_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
-      },
-      {
         "name": "fk_project_users_project_id_projects",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "project_id"
-        ]
+        "columns": ["project_id"]
+      },
+      {
+        "name": "fk_project_users_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": ["user_id"]
       },
       {
         "name": "pk_project_users",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -589,9 +711,7 @@
       {
         "name": "pk_roles",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -638,23 +758,17 @@
       {
         "name": "fk_role_entity_permissions_role_id_roles",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "role_id"
-        ]
+        "columns": ["role_id"]
       },
       {
         "name": "fk_role_entity_permissions_entity_id_entities",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "entity_id"
-        ]
+        "columns": ["entity_id"]
       },
       {
         "name": "pk_role_entity_permissions",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -725,23 +839,17 @@
       {
         "name": "fk_sessions_user_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
+        "columns": ["user_id"]
       },
       {
         "name": "pk_sessions",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       },
       {
         "name": "uq_sessions_slug",
         "type": "UniqueConstraint",
-        "columns": [
-          "slug"
-        ]
+        "columns": ["slug"]
       }
     ]
   },
@@ -812,23 +920,17 @@
       {
         "name": "pk_users",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
-      },
-      {
-        "name": "uq_users_email",
-        "type": "UniqueConstraint",
-        "columns": [
-          "email"
-        ]
+        "columns": ["id"]
       },
       {
         "name": "uq_users_username",
         "type": "UniqueConstraint",
-        "columns": [
-          "username"
-        ]
+        "columns": ["username"]
+      },
+      {
+        "name": "uq_users_email",
+        "type": "UniqueConstraint",
+        "columns": ["email"]
       }
     ]
   },
@@ -875,23 +977,17 @@
       {
         "name": "fk_user_entity_permissions_user_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
+        "columns": ["user_id"]
       },
       {
         "name": "fk_user_entity_permissions_entity_id_entities",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "entity_id"
-        ]
+        "columns": ["entity_id"]
       },
       {
         "name": "pk_user_entity_permissions",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   },
@@ -924,25 +1020,19 @@
     ],
     "constraints": [
       {
-        "name": "fk_user_roles_role_id_roles",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "role_id"
-        ]
-      },
-      {
         "name": "fk_user_roles_user_id_users",
         "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
+        "columns": ["user_id"]
+      },
+      {
+        "name": "fk_user_roles_role_id_roles",
+        "type": "ForeignKeyConstraint",
+        "columns": ["role_id"]
       },
       {
         "name": "pk_user_roles",
         "type": "PrimaryKeyConstraint",
-        "columns": [
-          "id"
-        ]
+        "columns": ["id"]
       }
     ]
   }
