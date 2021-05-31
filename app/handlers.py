@@ -6,12 +6,14 @@ from flask_jwt_extended.jwt_manager import JWTManager
 from flask_principal import (
     Identity,
     Need,
+    PermissionDenied,
     RoleNeed,
     UserNeed,
     identity_changed,
     identity_loaded,
 )
 
+from app.apis.v1.app_logging.models import ErrorLog
 from app.exceptions import InvalidUsage, UserExceptions
 from app.utils.helpers import get_user_entity_permissions
 
@@ -81,6 +83,27 @@ def invalid_csrf(e: CSRFError):
     raise UserExceptions.wrong_login_creds()
 
 
+def permission_denied(e: PermissionDenied):
+    raise InvalidUsage.user_not_authorized()
+
+
+def normalize_errors(e: Exception):
+    error_log = ErrorLog(e)
+
+    from app.database import db
+
+    db.session.rollback()
+
+    error_log.save(True)
+
+    return InvalidUsage.custom_error(
+        getattr(
+            e, "msg", getattr(e, "error", getattr(e, "message", "Undefined error"))
+        ),
+        code=getattr(e, "code", 404),
+    ).to_json()
+
+
 def register_handlers(app: Flask) -> Flask:
     """A function to register global request handlers.
     To register a handler add them like the example
@@ -100,6 +123,8 @@ def register_handlers(app: Flask) -> Flask:
     identity_loaded.connect_via(app)(on_identity_loaded)
 
     app.errorhandler(InvalidUsage)(invalid_error_handler)
-    app.errorhandler(CSRFError)
+    app.errorhandler(PermissionDenied)(permission_denied)
+    app.errorhandler(CSRFError)(invalid_csrf)
+    app.errorhandler(Exception)(normalize_errors)
 
     return app

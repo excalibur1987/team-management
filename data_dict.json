@@ -194,6 +194,94 @@
       }
     ]
   },
+  "error_log": {
+    "type": "table",
+    "model": {
+      "name": "ErrorLog",
+      "path": "app/apis/v1/app_logging/models/_ErrorLog.py"
+    },
+    "description": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "comment": "Unique row identifier",
+        "primary/foreign": "primary"
+      },
+      {
+        "name": "code",
+        "type": "VARCHAR",
+        "comment": "Application Error identifier code",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "comment": "logged in user",
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "message",
+        "type": "VARCHAR",
+        "comment": "error message",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "stack_trace",
+        "type": "VARCHAR",
+        "comment": "error stack trace",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "date_added",
+        "type": "DATETIME",
+        "comment": "row timestamp",
+        "primary/foreign": "n/a"
+      },
+      {
+        "name": "added_by_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      },
+      {
+        "name": "session_id",
+        "type": "INTEGER",
+        "comment": null,
+        "primary/foreign": "foreign"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "fk_error_log_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
+        ]
+      },
+      {
+        "name": "fk_error_log_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
+        ]
+      },
+      {
+        "name": "fk_error_log_session_id_sessions",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "session_id"
+        ]
+      },
+      {
+        "name": "pk_error_log",
+        "type": "PrimaryKeyConstraint",
+        "columns": [
+          "id"
+        ]
+      }
+    ]
+  },
   "projects": {
     "type": "table",
     "model": {
@@ -548,17 +636,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_role_entity_permissions_entity_id_entities",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "entity_id"
-        ]
-      },
-      {
         "name": "fk_role_entity_permissions_role_id_roles",
         "type": "ForeignKeyConstraint",
         "columns": [
           "role_id"
+        ]
+      },
+      {
+        "name": "fk_role_entity_permissions_entity_id_entities",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "entity_id"
         ]
       },
       {
@@ -729,17 +817,17 @@
         ]
       },
       {
-        "name": "uq_users_username",
-        "type": "UniqueConstraint",
-        "columns": [
-          "username"
-        ]
-      },
-      {
         "name": "uq_users_email",
         "type": "UniqueConstraint",
         "columns": [
           "email"
+        ]
+      },
+      {
+        "name": "uq_users_username",
+        "type": "UniqueConstraint",
+        "columns": [
+          "username"
         ]
       }
     ]
@@ -836,17 +924,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_user_roles_user_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "user_id"
-        ]
-      },
-      {
         "name": "fk_user_roles_role_id_roles",
         "type": "ForeignKeyConstraint",
         "columns": [
           "role_id"
+        ]
+      },
+      {
+        "name": "fk_user_roles_user_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "user_id"
         ]
       },
       {
