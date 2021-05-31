@@ -44,3 +44,39 @@ class ExtendedNameSpace(Namespace):
             return wrapped
 
         return wrapper
+
+
+class Nested(fields.Nested):
+    def __init__(
+        self,
+        model,
+        allow_null=False,
+        skip_none=False,
+        as_list=False,
+        only: List[str] = [],
+        **kwargs,
+    ):
+        super().__init__(
+            model, allow_null=allow_null, skip_none=skip_none, as_list=as_list, **kwargs
+        )
+        self.only = kwargs.get("only", [])
+
+    def output(self, key, obj, ordered=False, **kwargs):
+        value = fields.get_value(key if self.attribute is None else self.attribute, obj)
+        if value is None:
+            if self.allow_null:
+                return None
+            elif self.default is not None:
+                return self.default
+        if len(self.only) == 0:
+            return fields.marshal(
+                value, self.nested, skip_none=self.skip_none, ordered=ordered
+            )
+        new_value = {}
+        if isinstance(value, dict):
+            new_value = dict((key, new_value.get(key)) for key in self.only)
+        else:
+            new_value = dict((key, getattr(new_value, key)) for key in self.only)
+        return fields.marshal(
+            new_value, self.nested, skip_none=self.skip_none, ordered=ordered
+        )

@@ -5,7 +5,7 @@ from flask_jwt_extended import current_user
 from flask_principal import Identity
 
 from .decorators import has_roles
-from .extended_objects import ExtendedNameSpace
+from .extended_objects import ExtendedNameSpace, Nested
 from .file_handler import FileHandler
 from .helpers import chain
 from .url_w_args import UrlWArgs
