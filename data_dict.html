@@ -145,17 +145,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_permissions_asset_id_asset_storage
+                  fk_asset_permissions_user_id_users
                 </td>
-                <td colspan="1">asset_id</td>
+                <td colspan="1">user_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_permissions_user_id_users
+                  fk_asset_permissions_asset_id_asset_storage
                 </td>
-                <td colspan="1">user_id</td>
+                <td colspan="1">asset_id</td>
               </tr>
             
               <tr>
@@ -285,17 +285,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_storage_added_by_id_users
+                  fk_asset_storage_updated_by_id_users
                 </td>
-                <td colspan="1">added_by_id</td>
+                <td colspan="1">updated_by_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_storage_updated_by_id_users
+                  fk_asset_storage_added_by_id_users
                 </td>
-                <td colspan="1">updated_by_id</td>
+                <td colspan="1">added_by_id</td>
               </tr>
             
               <tr>
@@ -522,14 +522,6 @@
                 <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_error_log_user_id_users
-                </td>
-                <td colspan="1">user_id</td>
-              </tr>
-          
-              <tr>
-                
-                <td rowspan="1" colspan="1">
                   fk_error_log_session_id_sessions
                 </td>
                 <td colspan="1">session_id</td>
@@ -541,6 +533,14 @@
                   fk_error_log_added_by_id_users
                 </td>
                 <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
               </tr>
             
               <tr>
@@ -769,17 +769,17 @@
                 <td rowspan="2" colspan="1">UniqueConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  uq_organizations_name
+                  uq_organizations_slug
                 </td>
-                <td colspan="1">name</td>
+                <td colspan="1">slug</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  uq_organizations_slug
+                  uq_organizations_name
                 </td>
-                <td colspan="1">slug</td>
+                <td colspan="1">name</td>
               </tr>
            
         </tbody>
@@ -936,6 +936,24 @@
           </tr>
           
           <tr>
+            <td>slug</td>
+            <td>VARCHAR</td>
+            <td>unique project&#39;s slug</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>org_id</td>
+            <td>INTEGER</td>
+            <td></td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
             <td>is_completed</td>
             <td>BOOLEAN</td>
             <td>flags the project as complete</td>
@@ -1037,7 +1055,15 @@
              
               <tr>
                 
-                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                <td rowspan="4" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_projects_org_id_organizations
+                </td>
+                <td colspan="1">org_id</td>
+              </tr>
+          
+              <tr>
                 
                 <td rowspan="1" colspan="1">
                   fk_projects_updated_by_id_users
@@ -1069,6 +1095,16 @@
                   pk_projects
                 </td>
                 <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_projects_slug
+                </td>
+                <td colspan="1">slug</td>
               </tr>
            
         </tbody>
@@ -1179,9 +1215,9 @@
                 <td rowspan="4" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_project_asset_added_by_id_users
+                  fk_project_asset_updated_by_id_users
                 </td>
-                <td colspan="1">added_by_id</td>
+                <td colspan="1">updated_by_id</td>
               </tr>
           
               <tr>
@@ -1203,9 +1239,9 @@
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_project_asset_updated_by_id_users
+                  fk_project_asset_added_by_id_users
                 </td>
-                <td colspan="1">updated_by_id</td>
+                <td colspan="1">added_by_id</td>
               </tr>
             
               <tr>
@@ -1258,6 +1294,15 @@
           </tr>
           
           <tr>
+            <td>cancelled_at</td>
+            <td>DATETIME</td>
+            <td>timestamp for cancellation of record</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
             <td>project_id</td>
             <td>INTEGER</td>
             <td>None</td>
@@ -1293,6 +1338,51 @@
             </td>
           </tr>
           
+          <tr>
+            <td>date_added</td>
+            <td>DATETIME</td>
+            <td>row timestamp</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>date_updated</td>
+            <td>DATETIME</td>
+            <td>timestamp for last updated</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>added_by_id</td>
+            <td>INTEGER</td>
+            <td>None</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>updated_by_id</td>
+            <td>INTEGER</td>
+            <td>fk for user&#39;s table</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>cancelled_by_id</td>
+            <td>INTEGER</td>
+            <td>fk for user&#39;s table</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1305,7 +1395,23 @@
              
               <tr>
                 
-                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                <td rowspan="5" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_users_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_users_cancelled_by_id_users
+                </td>
+                <td colspan="1">cancelled_by_id</td>
+              </tr>
+          
+              <tr>
                 
                 <td rowspan="1" colspan="1">
                   fk_project_users_project_id_projects
@@ -1316,9 +1422,17 @@
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_project_users_user_id_users
+                  fk_project_users_added_by_id_users
                 </td>
-                <td colspan="1">user_id</td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_users_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
               </tr>
             
               <tr>
@@ -1498,17 +1612,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_role_entity_permissions_entity_id_entities
+                  fk_role_entity_permissions_role_id_roles
                 </td>
-                <td colspan="1">entity_id</td>
+                <td colspan="1">role_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_role_entity_permissions_role_id_roles
+                  fk_role_entity_permissions_entity_id_entities
                 </td>
-                <td colspan="1">role_id</td>
+                <td colspan="1">entity_id</td>
               </tr>
             
               <tr>
@@ -1784,6 +1898,15 @@
           </tr>
           
           <tr>
+            <td>manager_id</td>
+            <td>INTEGER</td>
+            <td>None</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
@@ -1831,12 +1954,12 @@
              
               <tr>
                 
-                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_users_updated_by_id_users
+                  fk_users_manager_id_users
                 </td>
-                <td colspan="1">updated_by_id</td>
+                <td colspan="1">manager_id</td>
               </tr>
           
               <tr>
@@ -1845,6 +1968,14 @@
                   fk_users_added_by_id_users
                 </td>
                 <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_users_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
               </tr>
             
               <tr>
@@ -1873,6 +2004,127 @@
                   uq_users_username
                 </td>
                 <td colspan="1">username</td>
+              </tr>
+           
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="sql-table-contianer" data-model="UserAffiliation" >
+      <h2>
+        <span class="table-name">user_affiliation</span>
+        <sub>TABLE</sub>
+      </h2>
+
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >UserAffiliation</a
+        >
+      </p>
+      <div class="wrapper">
+        <h2>Description:</h2>
+        <p>None</p>
+      </div>
+      
+      <table class="col-details">
+        <thead>
+          <th>Database Field Name</th>
+          <th>Data Type</th>
+          <th>Description</th>
+          <th>Primary/Foreign</th>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>id</td>
+            <td>INTEGER</td>
+            <td>Unique row identifier</td>
+            <td>
+              primary
+            </td>
+          </tr>
+          
+          <tr>
+            <td>user_id</td>
+            <td>INTEGER</td>
+            <td></td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>org_id</td>
+            <td>INTEGER</td>
+            <td></td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>department_id</td>
+            <td>INTEGER</td>
+            <td></td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>position_id</td>
+            <td>INTEGER</td>
+            <td></td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+      <table class="table-constraints">
+        <thead>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Columns</th>
+        </thead>
+        <tbody>
+             
+              <tr>
+                
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_affiliation_department_id_organization_departments
+                </td>
+                <td colspan="1">department_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_affiliation_org_id_organizations
+                </td>
+                <td colspan="1">org_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_affiliation_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_user_affiliation
+                </td>
+                <td colspan="1">id</td>
               </tr>
            
         </tbody>
@@ -1965,17 +2217,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_entity_permissions_user_id_users
+                  fk_user_entity_permissions_entity_id_entities
                 </td>
-                <td colspan="1">user_id</td>
+                <td colspan="1">entity_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_entity_permissions_entity_id_entities
+                  fk_user_entity_permissions_user_id_users
                 </td>
-                <td colspan="1">entity_id</td>
+                <td colspan="1">user_id</td>
               </tr>
             
               <tr>
@@ -2060,17 +2312,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_roles_user_id_users
+                  fk_user_roles_role_id_roles
                 </td>
-                <td colspan="1">user_id</td>
+                <td colspan="1">role_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_user_roles_role_id_roles
+                  fk_user_roles_user_id_users
                 </td>
-                <td colspan="1">role_id</td>
+                <td colspan="1">user_id</td>
               </tr>
             
               <tr>

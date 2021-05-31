@@ -1,18 +1,21 @@
 from datetime import date, datetime
 from typing import TYPE_CHECKING, List
+from uuid import uuid4
 
 from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import and_, cast
-from sqlalchemy.sql.schema import Column
-from sqlalchemy.sql.sqltypes import BOOLEAN, DATE, INTEGER, String
+from sqlalchemy.sql.schema import Column, ForeignKey
+from sqlalchemy.sql.sqltypes import BOOLEAN, DATE, INTEGER, Integer, String
 from werkzeug import datastructures
 
 from app.database import BaseModel, CancelableModel, DatedModel
 from app.utils import FileHandler
 
 if TYPE_CHECKING:
+    from app.apis.v1.organization.models import Organization
+
     from ._ProjectAsset import ProjectAsset  # NOQA
 
 
@@ -25,6 +28,11 @@ class Project(BaseModel, DatedModel, CancelableModel):
     description = Column(
         String, nullable=True, comment="Description for created project"
     )
+
+    slug = Column(String, unique=True, nullable=False, comment="unique project's slug")
+
+    org_id = Column(Integer, ForeignKey("organizations.id"), comment="")
+    organization: "Organization" = relationship("Organization")
 
     is_completed = Column(
         BOOLEAN,
@@ -73,9 +81,10 @@ class Project(BaseModel, DatedModel, CancelableModel):
             self.logo_handler = FileHandler(data=logo.stream, title=logo.filename)
             self.logo = self.logo_handler.url
         self.is_public = public
+        self.slug = uuid4()
 
     def save(self):
-        if getattr(self, 'logo_handler', None) is not None:
+        if getattr(self, "logo_handler", None) is not None:
             self.logo_handler.save()
         super().save(persist=True)
 
@@ -94,11 +103,12 @@ class Project(BaseModel, DatedModel, CancelableModel):
             .with_entities(
                 User.id.label("id"),
                 User.name.label("name"),
+                ProjectUser.is_active.label("active"),
             )
             .filter(
                 and_(
                     ProjectUser.project_id == self.id,
-                    ProjectUser.is_active,
+                    ProjectUser.cancelled_at.is_not(None),
                 )
             )
             .all()

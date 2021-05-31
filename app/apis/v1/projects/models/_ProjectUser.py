@@ -7,7 +7,7 @@ from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import BOOLEAN, INTEGER, SMALLINT
 from typing_extensions import TypeAlias
 
-from app.database import BaseModel
+from app.database import BaseModel, CancelableModel, DatedModel
 
 if TYPE_CHECKING:
     from app.apis.v1.users.models import User
@@ -17,17 +17,21 @@ if TYPE_CHECKING:
 RoleType: TypeAlias = Literal["admin", "editor", "viewer"]
 
 
-class ProjectUser(BaseModel):
+class ProjectUser(BaseModel, DatedModel, CancelableModel):
     """holds references to users assigned to a project"""
 
     __tablename__ = "project_users"
 
     PROJECT_ROLES: List[RoleType] = ["admin", "editor", "viewer"]
 
+    ADMIN = "admin"
+    EDITOR = "editor"
+    VIEWER = "viewer"
+
     project_id = Column(INTEGER, ForeignKey("projects.id"))
 
     user_id = Column(INTEGER, ForeignKey("users.id"))
-    user = relationship("User", uselist=False)
+    user = relationship("User", foreign_keys=[user_id], uselist=False)
 
     is_active = Column(
         BOOLEAN,
