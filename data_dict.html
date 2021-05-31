@@ -58,19 +58,24 @@
   </head>
   <body>
     <h1 class="title">Data Dictionary</h1>
-
-    <div class="sql-table-contianer" data-model="AssetPermission">
+    
+    <div class="sql-table-contianer" data-model="AssetPermission" >
       <h2>
         <span class="table-name">asset_permissions</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">AssetPermission</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >AssetPermission</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>permissions on assets granted to users</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -79,40 +84,52 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>asset_id</td>
             <td>INTEGER</td>
             <td>asset reference id</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>user&#39;s id</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_update</td>
             <td>BOOLEAN</td>
             <td>if the user can update the asset</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_delete</td>
             <td>BOOLEAN</td>
             <td>if the user can delete the asset</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -122,42 +139,56 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_asset_permissions_asset_id_asset_storage
-            </td>
-            <td colspan="1">asset_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_asset_permissions_user_id_users</td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_asset_permissions</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_asset_permissions_asset_id_asset_storage
+                </td>
+                <td colspan="1">asset_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_asset_permissions_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_asset_permissions
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="AssetStorage">
+    
+    <div class="sql-table-contianer" data-model="AssetStorage" >
       <h2>
         <span class="table-name">asset_storage</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">AssetStorage</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >AssetStorage</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>holds references to assets uploaded by users</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -166,61 +197,79 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>ref_id</td>
             <td>VARCHAR</td>
             <td>unique id for file</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>title</td>
             <td>VARCHAR</td>
             <td>file title with extension</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>url</td>
             <td>VARCHAR</td>
             <td>file url</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_updated</td>
             <td>DATETIME</td>
             <td>timestamp for last updated</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>added_by_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>updated_by_id</td>
             <td>INTEGER</td>
             <td>fk for user&#39;s table</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -230,49 +279,66 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">fk_asset_storage_added_by_id_users</td>
-            <td colspan="1">added_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_asset_storage_updated_by_id_users
-            </td>
-            <td colspan="1">updated_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_asset_storage</td>
-            <td colspan="1">id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">UniqueConstraint</td>
-
-            <td rowspan="1" colspan="1">uq_asset_storage_ref_id</td>
-            <td colspan="1">ref_id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_asset_storage_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_asset_storage_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_asset_storage
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_asset_storage_ref_id
+                </td>
+                <td colspan="1">ref_id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="Entity">
+    
+    <div class="sql-table-contianer" data-model="Entity" >
       <h2>
         <span class="table-name">entities</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">Entity</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >Entity</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -281,26 +347,34 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>name</td>
             <td>VARCHAR</td>
             <td>entity name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>description</td>
             <td>VARCHAR</td>
             <td>short discription of the entity</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -310,35 +384,48 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_entities</td>
-            <td colspan="1">id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">UniqueConstraint</td>
-
-            <td rowspan="1" colspan="1">uq_entities_name</td>
-            <td colspan="1">name</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_entities
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_entities_name
+                </td>
+                <td colspan="1">name</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="ErrorLog">
+    
+    <div class="sql-table-contianer" data-model="ErrorLog" >
       <h2>
         <span class="table-name">error_log</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">ErrorLog</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >ErrorLog</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -347,61 +434,79 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>code</td>
             <td>VARCHAR</td>
             <td>Application Error identifier code</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>logged in user</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>message</td>
             <td>VARCHAR</td>
             <td>error message</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>stack_trace</td>
             <td>VARCHAR</td>
             <td>error stack trace</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>added_by_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>session_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -411,45 +516,64 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">fk_error_log_session_id_sessions</td>
-            <td colspan="1">session_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_error_log_added_by_id_users</td>
-            <td colspan="1">added_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_error_log_user_id_users</td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_error_log</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_session_id_sessions
+                </td>
+                <td colspan="1">session_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_error_log_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_error_log
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="Organization">
+    
+    <div class="sql-table-contianer" data-model="Organization" >
       <h2>
         <span class="table-name">organizations</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">Organization</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >Organization</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -458,110 +582,142 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>name</td>
             <td>VARCHAR</td>
             <td>Unique name of Organization</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>description</td>
             <td>VARCHAR</td>
             <td>Short description of organization</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>addr_line1</td>
             <td>VARCHAR</td>
             <td>Address line 1</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>addr_line2</td>
             <td>VARCHAR</td>
             <td>Address line 1</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>country</td>
             <td>VARCHAR</td>
             <td>Country&#39;s ISO code</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>city</td>
             <td>VARCHAR</td>
             <td>City&#39;s name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>contact_email</td>
             <td>VARCHAR</td>
             <td></td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>contact_phone</td>
             <td>VARCHAR</td>
             <td></td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>contact_user_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>slug</td>
             <td>VARCHAR</td>
             <td>identifier slug for organization</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_updated</td>
             <td>DATETIME</td>
             <td>timestamp for last updated</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>added_by_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>updated_by_id</td>
             <td>INTEGER</td>
             <td>fk for user&#39;s table</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -571,61 +727,82 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_organizations_contact_user_id_users
-            </td>
-            <td colspan="1">contact_user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_organizations_added_by_id_users</td>
-            <td colspan="1">added_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_organizations_updated_by_id_users
-            </td>
-            <td colspan="1">updated_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_organizations</td>
-            <td colspan="1">id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="2" colspan="1">UniqueConstraint</td>
-
-            <td rowspan="1" colspan="1">uq_organizations_name</td>
-            <td colspan="1">name</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">uq_organizations_slug</td>
-            <td colspan="1">slug</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_organizations_contact_user_id_users
+                </td>
+                <td colspan="1">contact_user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_organizations_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_organizations_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_organizations
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="2" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_organizations_name
+                </td>
+                <td colspan="1">name</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  uq_organizations_slug
+                </td>
+                <td colspan="1">slug</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="OrganizationDepartment">
+    
+    <div class="sql-table-contianer" data-model="OrganizationDepartment" >
       <h2>
         <span class="table-name">organization_departments</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">OrganizationDepartment</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >OrganizationDepartment</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -634,26 +811,34 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>org_id</td>
             <td>INTEGER</td>
             <td></td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>name</td>
             <td>VARCHAR</td>
             <td>department&#39;s name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -663,37 +848,48 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="1" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_organization_departments_org_id_organizations
-            </td>
-            <td colspan="1">org_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_organization_departments</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="1" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_organization_departments_org_id_organizations
+                </td>
+                <td colspan="1">org_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_organization_departments
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="Project">
+    
+    <div class="sql-table-contianer" data-model="Project" >
       <h2>
         <span class="table-name">projects</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">Project</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >Project</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>holds references to assets uploaded by users</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -702,103 +898,133 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>cancelled_at</td>
             <td>DATETIME</td>
             <td>timestamp for cancellation of record</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>title</td>
             <td>VARCHAR</td>
             <td>Project&#39;s Title</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>description</td>
             <td>VARCHAR</td>
             <td>Description for created project</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>is_completed</td>
             <td>BOOLEAN</td>
             <td>flags the project as complete</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>is_public</td>
             <td>BOOLEAN</td>
             <td>flags the project as public</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>start_date</td>
             <td>DATE</td>
             <td>project&#39;s start date</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>time_frame</td>
             <td>INTEGER</td>
             <td>estimated time-frame for project in days</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>logo</td>
             <td>VARCHAR</td>
             <td>url to project&#39;s logo</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_updated</td>
             <td>DATETIME</td>
             <td>timestamp for last updated</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>added_by_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>updated_by_id</td>
             <td>INTEGER</td>
             <td>fk for user&#39;s table</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>cancelled_by_id</td>
             <td>INTEGER</td>
             <td>fk for user&#39;s table</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -808,45 +1034,64 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">fk_projects_updated_by_id_users</td>
-            <td colspan="1">updated_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_projects_added_by_id_users</td>
-            <td colspan="1">added_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_projects_cancelled_by_id_users</td>
-            <td colspan="1">cancelled_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_projects</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_projects_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_projects_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_projects_cancelled_by_id_users
+                </td>
+                <td colspan="1">cancelled_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_projects
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="ProjectAsset">
+    
+    <div class="sql-table-contianer" data-model="ProjectAsset" >
       <h2>
         <span class="table-name">project_asset</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">ProjectAsset</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >ProjectAsset</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>references for assets available to projects</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -855,54 +1100,70 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>project_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>asset_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_added</td>
             <td>DATETIME</td>
             <td>row timestamp</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>date_updated</td>
             <td>DATETIME</td>
             <td>timestamp for last updated</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>added_by_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>updated_by_id</td>
             <td>INTEGER</td>
             <td>fk for user&#39;s table</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -912,56 +1173,72 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="4" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_project_asset_asset_id_asset_storage
-            </td>
-            <td colspan="1">asset_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_project_asset_added_by_id_users</td>
-            <td colspan="1">added_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_project_asset_updated_by_id_users
-            </td>
-            <td colspan="1">updated_by_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_project_asset_project_id_projects
-            </td>
-            <td colspan="1">project_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_project_asset</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="4" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_asset_id_asset_storage
+                </td>
+                <td colspan="1">asset_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_project_id_projects
+                </td>
+                <td colspan="1">project_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_project_asset
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="ProjectUser">
+    
+    <div class="sql-table-contianer" data-model="ProjectUser" >
       <h2>
         <span class="table-name">project_users</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">ProjectUser</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >ProjectUser</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>holds references to users assigned to a project</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -970,40 +1247,52 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>project_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>None</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>is_active</td>
             <td>BOOLEAN</td>
             <td>flags the validity of user in the project</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>role_id</td>
             <td>SMALLINT</td>
             <td>user&#39;s role in this project</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1013,42 +1302,56 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_project_users_project_id_projects
-            </td>
-            <td colspan="1">project_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_project_users_user_id_users</td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_project_users</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_users_project_id_projects
+                </td>
+                <td colspan="1">project_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_users_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_project_users
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="Role">
+    
+    <div class="sql-table-contianer" data-model="Role" >
       <h2>
         <span class="table-name">roles</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">Role</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >Role</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>contains basic roles for the aplication</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1057,26 +1360,34 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>name</td>
             <td>VARCHAR</td>
             <td>role name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>description</td>
             <td>VARCHAR</td>
             <td>short discription of the role</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1086,28 +1397,38 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_roles</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_roles
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="RoleEntityPermission">
+    
+    <div class="sql-table-contianer" data-model="RoleEntityPermission" >
       <h2>
         <span class="table-name">role_entity_permissions</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">RoleEntityPermission</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >RoleEntityPermission</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1116,40 +1437,52 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>entity_id</td>
             <td>INTEGER</td>
             <td>entity&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>role_id</td>
             <td>INTEGER</td>
             <td>role&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_create</td>
             <td>BOOLEAN</td>
             <td>can create flag</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_edit</td>
             <td>BOOLEAN</td>
             <td>can edit flag</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1159,44 +1492,56 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_role_entity_permissions_role_id_roles
-            </td>
-            <td colspan="1">role_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_role_entity_permissions_entity_id_entities
-            </td>
-            <td colspan="1">entity_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_role_entity_permissions</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_role_entity_permissions_entity_id_entities
+                </td>
+                <td colspan="1">entity_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_role_entity_permissions_role_id_roles
+                </td>
+                <td colspan="1">role_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_role_entity_permissions
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="Session">
+    
+    <div class="sql-table-contianer" data-model="Session" >
       <h2>
         <span class="table-name">sessions</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">Session</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >Session</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>table for user&#39;s active sessions</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1205,68 +1550,88 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>user&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>token</td>
             <td>VARCHAR</td>
             <td>session&#39;s token</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>ip_address</td>
             <td>VARCHAR</td>
             <td>machine&#39;s ip address</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>platform</td>
             <td>VARCHAR</td>
             <td>machine&#39;s os platform</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>browser</td>
             <td>VARCHAR</td>
             <td>registered browser</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>active</td>
             <td>BOOLEAN</td>
             <td>None</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>slug</td>
             <td>VARCHAR</td>
             <td>unique&#39;s slug identifier</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>created_at</td>
             <td>TIMESTAMP</td>
             <td>session&#39;s creation date</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1276,42 +1641,58 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="1" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">fk_sessions_user_id_users</td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_sessions</td>
-            <td colspan="1">id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">UniqueConstraint</td>
-
-            <td rowspan="1" colspan="1">uq_sessions_slug</td>
-            <td colspan="1">slug</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="1" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_sessions_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_sessions
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_sessions_slug
+                </td>
+                <td colspan="1">slug</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="User">
+    
+    <div class="sql-table-contianer" data-model="User" >
       <h2>
         <span class="table-name">users</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">User</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >User</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>Holds users&#39; data</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1320,68 +1701,124 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>username</td>
             <td>VARCHAR</td>
             <td>User&#39;s identifier</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>is_active</td>
             <td>BOOLEAN</td>
             <td>Denotes active users</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>password</td>
             <td>VARCHAR</td>
             <td>Password hash</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>email</td>
             <td>VARCHAR</td>
             <td>User&#39;s personal unique email</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>photo</td>
             <td>VARCHAR</td>
             <td>User&#39;s avatar url</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
-            <td>mobile</td>
+            <td>phone</td>
             <td>VARCHAR</td>
             <td>Contact number</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>first_name</td>
             <td>VARCHAR</td>
             <td>First Name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>last_name</td>
             <td>VARCHAR</td>
             <td>Last Name</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
+          <tr>
+            <td>date_added</td>
+            <td>DATETIME</td>
+            <td>row timestamp</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>date_updated</td>
+            <td>DATETIME</td>
+            <td>timestamp for last updated</td>
+            <td>
+              n/a
+            </td>
+          </tr>
+          
+          <tr>
+            <td>added_by_id</td>
+            <td>INTEGER</td>
+            <td>None</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
+          <tr>
+            <td>updated_by_id</td>
+            <td>INTEGER</td>
+            <td>fk for user&#39;s table</td>
+            <td>
+              foreign
+            </td>
+          </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1391,40 +1828,74 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_users</td>
-            <td colspan="1">id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="2" colspan="1">UniqueConstraint</td>
-
-            <td rowspan="1" colspan="1">uq_users_username</td>
-            <td colspan="1">username</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">uq_users_email</td>
-            <td colspan="1">email</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_users_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_users_added_by_id_users
+                </td>
+                <td colspan="1">added_by_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_users
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="2" colspan="1">UniqueConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  uq_users_email
+                </td>
+                <td colspan="1">email</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  uq_users_username
+                </td>
+                <td colspan="1">username</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="UserEntityPermission">
+    
+    <div class="sql-table-contianer" data-model="UserEntityPermission" >
       <h2>
         <span class="table-name">user_entity_permissions</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">UserEntityPermission</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >UserEntityPermission</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>None</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1433,40 +1904,52 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>entity_id</td>
             <td>INTEGER</td>
             <td>entity&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>user&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_create</td>
             <td>BOOLEAN</td>
             <td>can create flag</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
-
+          
           <tr>
             <td>can_edit</td>
             <td>BOOLEAN</td>
             <td>can edit flag</td>
-            <td>n/a</td>
+            <td>
+              n/a
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1476,44 +1959,56 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">
-              fk_user_entity_permissions_user_id_users
-            </td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">
-              fk_user_entity_permissions_entity_id_entities
-            </td>
-            <td colspan="1">entity_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_user_entity_permissions</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_entity_permissions_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_entity_permissions_entity_id_entities
+                </td>
+                <td colspan="1">entity_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_user_entity_permissions
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
-
-    <div class="sql-table-contianer" data-model="UserRoles">
+    
+    <div class="sql-table-contianer" data-model="UserRoles" >
       <h2>
         <span class="table-name">user_roles</span>
         <sub>TABLE</sub>
       </h2>
 
-      <p><b>Sqlalchemy Model:</b><a href="">UserRoles</a></p>
+      <p>
+        <b>Sqlalchemy Model:</b
+        ><a href=""
+          >UserRoles</a
+        >
+      </p>
       <div class="wrapper">
         <h2>Description:</h2>
         <p>holds user roles pairs</p>
       </div>
-
+      
       <table class="col-details">
         <thead>
           <th>Database Field Name</th>
@@ -1522,26 +2017,34 @@
           <th>Primary/Foreign</th>
         </thead>
         <tbody>
+          
           <tr>
             <td>id</td>
             <td>INTEGER</td>
             <td>Unique row identifier</td>
-            <td>primary</td>
+            <td>
+              primary
+            </td>
           </tr>
-
+          
           <tr>
             <td>user_id</td>
             <td>INTEGER</td>
             <td>user&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
-
+          
           <tr>
             <td>role_id</td>
             <td>INTEGER</td>
             <td>role&#39;s table foreign key</td>
-            <td>foreign</td>
+            <td>
+              foreign
+            </td>
           </tr>
+          
         </tbody>
       </table>
       <table class="table-constraints">
@@ -1551,26 +2054,38 @@
           <th>Columns</th>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">fk_user_roles_user_id_users</td>
-            <td colspan="1">user_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">fk_user_roles_role_id_roles</td>
-            <td colspan="1">role_id</td>
-          </tr>
-
-          <tr>
-            <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
-
-            <td rowspan="1" colspan="1">pk_user_roles</td>
-            <td colspan="1">id</td>
-          </tr>
+             
+              <tr>
+                
+                <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_roles_user_id_users
+                </td>
+                <td colspan="1">user_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_user_roles_role_id_roles
+                </td>
+                <td colspan="1">role_id</td>
+              </tr>
+            
+              <tr>
+                
+                <td rowspan="1" colspan="1">PrimaryKeyConstraint</td>
+                
+                <td rowspan="1" colspan="1">
+                  pk_user_roles
+                </td>
+                <td colspan="1">id</td>
+              </tr>
+           
         </tbody>
       </table>
     </div>
+    
   </body>
 </html>

@@ -172,9 +172,9 @@ def add_user_helper() -> "User":
             break
     email = input("Email:").lower()
     while True:
-        mobile = input("Mobile:")
-        if not re.match(r"\+?\d*", mobile):
-            print("Enter a valid mobile number")
+        phone = input("Phone:")
+        if not re.match(r"\+?\d*", phone):
+            print("Enter a valid phone number")
             continue
         break
 
@@ -186,7 +186,7 @@ def add_user_helper() -> "User":
         password=password,
         password_check=password_check,
         email=email,
-        mobile=mobile,
+        phone=phone,
         first_name=first_name,
         last_name=last_name,
     )

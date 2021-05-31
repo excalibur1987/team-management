@@ -4,11 +4,11 @@ from typing import TYPE_CHECKING, Any, List, Union
 from flask import current_app
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import cast
-from sqlalchemy.sql.schema import Column
-from sqlalchemy.sql.sqltypes import BOOLEAN, String
+from sqlalchemy.sql.schema import Column, ForeignKey
+from sqlalchemy.sql.sqltypes import BOOLEAN, Integer, String
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.database import BaseModel, db
+from app.database import BaseModel, DatedModel, db
 from app.exceptions import UserExceptions
 from app.utils.file_handler import FileHandler
 
@@ -34,7 +34,7 @@ class PasswordHelper:
         return equality
 
 
-class User(BaseModel):
+class User(BaseModel, DatedModel):
     """Holds users' data"""
 
     __tablename__ = "users"
@@ -56,7 +56,7 @@ class User(BaseModel):
 
     # meta data
     _photo = Column("photo", String, nullable=True, comment="User's avatar url")
-    mobile = Column(String, nullable=True, comment="Contact number")
+    phone = Column(String, nullable=True, comment="Contact number")
 
     # User information
     first_name = Column(String, nullable=False, comment="First Name")
@@ -86,6 +86,32 @@ class User(BaseModel):
 
     token = None
 
+    def set_password(self, val: str):
+        regx = re.compile(current_app.config["PASSWORD_RULE"])
+        if not regx.match(val):
+            raise UserExceptions.password_check_invalid()
+        self._password = generate_password_hash(val)
+
+    def get_password(self):
+        return PasswordHelper(self._password)
+
+    password = property(get_password, set_password)
+
+    def get_photo(self):
+        return (
+            self.__photo_handler
+            if getattr(self, "__photo_handler", None) is not None
+            else FileHandler(url=self._photo)
+            if self._photo
+            else None
+        )
+
+    def set_photo(self, val: FileHandler):
+        self.__photo_handler = val
+        self._photo = getattr(val, "url", None)
+
+    photo = property(get_photo, set_photo)
+
     def __init__(
         self,
         username: str,
@@ -93,8 +119,8 @@ class User(BaseModel):
         password_check: str,
         active: bool = True,
         email: str = None,
-        photo: str = None,
-        mobile: str = None,
+        photo: "FileHandler" = None,
+        phone: str = None,
         first_name: str = "",
         last_name: str = "",
         **kwargs,
@@ -102,11 +128,11 @@ class User(BaseModel):
         if password != password_check:
             raise UserExceptions.password_check_invalid()
         self.username = username
-        self._password = generate_password_hash(password)
+        self.password = password
         self.active = active
         self.email = email
-        self._photo = photo
-        self.mobile = mobile
+        self.photo = photo
+        self.phone = phone
         self.first_name = first_name
         self.last_name = last_name
 

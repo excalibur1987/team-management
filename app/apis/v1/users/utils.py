@@ -27,5 +27,5 @@ def extract_request_info(request: "Request") -> TypedUserInfo:
     }
 
 
-def mobile_checker(mobile: str):
-    return re.match(r"\+?\d*", mobile)
+def phone_checker(phone: str):
+    return re.match(r"\+?\d*", phone)

@@ -14,7 +14,7 @@ class UserDict(TypedDict):
     active: bool
     email: str
     photo: str
-    mobile: str
+    phone: str
     first_name: str
     last_name: str
     roles: List[str]

@@ -20,7 +20,7 @@ class UserDict(TypedDict):
     active: bool
     email: str
     photo: str
-    mobile: str
+    phone: str
     first_name: str
     last_name: str
     roles: List[str]
@@ -95,7 +95,7 @@ def admin_user() -> UserDict:
         "password": "123456",
         "password_check": "123456",
         "email": "john.doe@example.com",
-        "mobile": "+12345678910",
+        "phone": "+12345678910",
         "first_name": "john",
         "last_name": "doe",
         "roles": ["admin"],
@@ -109,7 +109,7 @@ def site_user() -> UserDict:
         "password": "123456",
         "password_check": "123456",
         "email": "jane.doe@example.com",
-        "mobile": "+12345678910",
+        "phone": "+12345678910",
         "first_name": "jane",
         "last_name": "doe",
         "roles": ["user"],
