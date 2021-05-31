@@ -1,5 +1,5 @@
 import re
-from typing import TYPE_CHECKING, Any, List, Union
+from typing import TYPE_CHECKING, List, Union
 
 from flask import current_app
 from sqlalchemy.orm import relationship
@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from ...entities.models import Entity
     from ...roles.models import Role
     from ._Session import Session  # NOQA
+    from ._UserAffiliation import UserAffiliation
 
     hybrid_property = property
 else:
@@ -62,18 +63,10 @@ class User(BaseModel, DatedModel):
     first_name = Column(String, nullable=False, comment="First Name")
     last_name = Column(String, nullable=False, server_default="", comment="Last Name")
 
-    # Uncomment to if you want to add manager employee relations
-    # manager_id = Column(String, nullable=True)
-    # manager: "User" = relationship(
-    #     "User", foreign_keys=[manager_id], lazy=True, uselist=False
-    # )
-
-    # employees: List["User"] = relationship(
-    #     "User",
-    #     lazy=True,
-    #     uselist=True,
-    #     primaryjoin="User.user_id==foreign(User.manager_id)",
-    # )
+    manager_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    manager: "User" = relationship(
+        "User", foreign_keys=[manager_id], lazy=True, uselist=False
+    )
 
     # Relationships
 
@@ -83,6 +76,8 @@ class User(BaseModel, DatedModel):
     sessions = relationship(
         "Session", order_by="Session.created_at.asc()", uselist=True
     )
+
+    affiliation: "UserAffiliation" = relationship("UserAffiliation", uselist=False)
 
     token = None
 
@@ -136,28 +131,6 @@ class User(BaseModel, DatedModel):
         self.first_name = first_name
         self.last_name = last_name
 
-    def __setattr__(self, name: str, value: Any) -> None:
-        """intercept setting of password"""
-        if name == "password":
-            regx = re.compile(current_app.config["PASSWORD_RULE"])
-            if not regx.match(value):
-                raise UserExceptions.password_check_invalid()
-            self._password = value
-        elif name == "photo":
-            assert isinstance(value, FileHandler)
-            self._photo = value.url
-        else:
-            super(User, self).__setattr__(name, value)
-
-    @hybrid_property
-    def photo(self) -> Union[FileHandler, None]:
-        return FileHandler(url=self._photo) if self._photo else None
-
-    @hybrid_property
-    def password(self) -> PasswordHelper:
-        """password proxy helper"""
-        return PasswordHelper(self._password)
-
     @hybrid_property
     def name(self) -> str:
         """concatenates user's name"""
@@ -192,3 +165,8 @@ class User(BaseModel, DatedModel):
         )
         db.session.add(permission)
         db.session.commit()
+
+    @hybrid_property
+    def employees(self):
+
+        return User.query.filter(User.manager_id == User.id).all()

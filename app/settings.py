@@ -58,6 +58,7 @@ class Config(object):
     AWS_SECRET_ACCESS_KEY = os.getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY", None)
     S3_BUCKET_NAME = os.getenv("BUCKETEER_BUCKET_NAME", None)
     AWS_ENDPOINT = os.getenv("AWS_ENDPOINT", None)
+    VALID_DEPARTMENTS = os.getenv("VALID_DEPARTMENTS", "").split(",")
 
 
 class DevConfig(Config):
