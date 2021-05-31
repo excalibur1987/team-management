@@ -15,13 +15,13 @@ api_v1 = Api(
 
 def register_namespaces(api_: Api) -> Api:
 
-    from .roles import api as roles_api
-
-    api_v1.add_namespace(roles_api)
-
     from .users import api as user_api
 
     api_v1.add_namespace(user_api)
+
+    from .roles import api as roles_api
+
+    api_v1.add_namespace(roles_api)
 
     from .entities import api as entity_api
 
@@ -30,6 +30,10 @@ def register_namespaces(api_: Api) -> Api:
     from .projects import api as project_api
 
     api_v1.add_namespace(project_api)
+
+    from .organization import api as organization_api
+
+    api_v1.add_namespace(organization_api)
 
     return api_
 
