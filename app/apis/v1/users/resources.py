@@ -5,6 +5,7 @@ from flask import jsonify, request
 from flask.helpers import make_response
 from flask.wrappers import Response
 from flask_jwt_extended import current_user, jwt_required
+from flask_jwt_extended.exceptions import CSRFError
 from flask_jwt_extended.utils import (
     create_access_token,
     get_csrf_token,
@@ -13,6 +14,7 @@ from flask_jwt_extended.utils import (
     set_access_cookies,
     unset_jwt_cookies,
 )
+from flask_jwt_extended.view_decorators import verify_jwt_in_request
 from flask_principal import Permission, RoleNeed
 from flask_restx import Resource, marshal
 from flask_restx.reqparse import RequestParser
@@ -42,17 +44,14 @@ current_user: "User"
 class UsersResource(Resource):
     active_users_parser = RequestParser()
     active_users_parser.add_argument(
-        "active",
-        type=int,
-        choices=[0, 1],
-        location="args",
+        "active", type=int, choices=[0, 1], location="args", default=1
     )
 
     @jwt_required()
     @has_roles("admin")
     @api.doc("get list of users")
-    @api.expect(active_users_parser)
-    @api.marshal_list_with(user_model, skip_none=True)
+    @api.expect(combine_parsers(active_users_parser, offset_parser))
+    @api.serialize_multi(user_model, User, description="List of users")
     def get(
         self,
     ):
@@ -238,10 +237,15 @@ class UserResource(Resource):
 class LogoutResource(Resource):
     @api.doc("logout user and invalidate session")
     def get(self):
+        try:
+            verify_jwt_in_request()
+            active_session_token = get_jwt()["jti"]
 
-        active_session_token = get_jwt()["jti"]
-
-        Session.get(token=active_session_token).delete(True)
+            Session.get(token=active_session_token).update(
+                active=False, ignore_none=True, persist=True
+            )
+        except CSRFError:
+            pass
         response: Response = jsonify({"message": "User logged out!"})
         response.delete_cookie("csrftoken")
         unset_jwt_cookies(response)

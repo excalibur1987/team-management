@@ -1,9 +1,7 @@
 from flask_jwt_extended.utils import get_jwt
 from flask_restx import fields
 
-from app.apis.v1.organization.api_models import organization_model
 from app.utils import UrlWArgs
-from app.utils.extended_objects import Nested
 
 from .namespace import api
 
@@ -27,13 +25,7 @@ user_serializer = {
         fields.String(attribute="name"), description="A list of user roles"
     ),
     "token": fields.String(default=None),
-    "organization": Nested(
-        organization_model,
-        attribute="affiliation.organization",
-        only=[
-            "name",
-        ],
-    ),
+    "organization": fields.String(attribute="affiliation.organization.name"),
     "department": fields.Nested(
         affiliation_model,
         attribute="affiliation",
