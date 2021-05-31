@@ -1,9 +1,9 @@
 from flask_restx import fields
 
-from app.apis.v1.users.api_models import user_model
+from app.apis.v1.users.resources import user_model
 from app.utils.extended_objects import Nested
 
-from . import api
+from .namespace import api
 
 department_serializer = {"id": fields.Integer(), "name": fields.String()}
 organization_department_model = api.model(

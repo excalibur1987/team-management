@@ -3,9 +3,9 @@ from collections import namedtuple
 from flask.globals import current_app
 from flask_restx import Resource
 
-from . import api
 from .api_models import organization_department_model, organization_model
 from .models import Organization
+from .namespace import api
 
 
 class OrganizationResource(Resource):
@@ -24,7 +24,3 @@ class DepartmentsResource(Resource):
             Named_Department(id=idx, name=dep)
             for idx, dep in enumerate(current_app.config["VALID_DEPARTMENTS"])
         ]
-
-
-api.add_resource(OrganizationResource, "/<org_slug>")
-api.add_resource(DepartmentsResource, "/departments")

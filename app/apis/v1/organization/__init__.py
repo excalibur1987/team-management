@@ -1,3 +1,5 @@
-from app.utils.extended_objects import ExtendedNameSpace
+from .namespace import api
+from .resources import DepartmentsResource, OrganizationResource
 
-api = ExtendedNameSpace("organization", description="Organization's operations")
+api.add_resource(OrganizationResource, "/<org_slug>")
+api.add_resource(DepartmentsResource, "/departments")
