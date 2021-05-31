@@ -9,11 +9,11 @@ from .namespace import api
 
 
 class OrganizationResource(Resource):
-    @api.expect("org_slug", "organization's identifier slug", type=str)
+    @api.expect("org_name", "organization's name", type=str)
     @api.marshal_with(organization_model)
-    def get(self, org_slug: str):
+    def get(self, org_name: str):
 
-        return Organization.get(slug=org_slug)
+        return Organization.get(name=org_name)
 
 
 class DepartmentsResource(Resource):
