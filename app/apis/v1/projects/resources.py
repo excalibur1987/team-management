@@ -9,10 +9,11 @@ from sqlalchemy import and_
 from sqlalchemy.sql.expression import cast, or_, select
 from sqlalchemy.sql.sqltypes import BOOLEAN
 
+from app.apis.v1.organization.models import Organization
 from app.exceptions import InvalidUsage
 from app.utils import current_user, g
-from app.utils.custom_principal_needs import ProjectNeed
-from app.utils.decorators import has_permission
+from app.utils.custom_principal_needs import OrganizationNeed, ProjectNeed
+from app.utils.decorators import has_endpoint_permission, has_permission
 from app.utils.helpers import argument_list_type, combine_parsers
 from app.utils.parsers import offset_parser
 
@@ -26,15 +27,19 @@ from .parsers import project_parser, query_parser
 
 class ProjectsResource(Resource):
     @jwt_required()
+    @has_endpoint_permission("org_name", OrganizationNeed)
     @api.expect(combine_parsers(query_parser, offset_parser))
     @api.serialize_multi(project_model, Project)
-    def get(self):
+    def get(self, org_name: str):
         query_args: dict = query_parser.parse_args()
         offset_args: dict = offset_parser.parse_args()
         public: bool = json.loads(query_args.pop("is_public", "true"))
-        projects: List[Project] = (
+        projects_query = (
             Project.query.filter(
                 and_(
+                    Project.org_id.in_(
+                        select(Organization.id).where(Organization.name == org_name)
+                    ),
                     *(
                         [
                             (getattr(Project, k) == v)
@@ -49,6 +54,7 @@ class ProjectsResource(Resource):
                                     )
                                 ),
                                 cast(public, BOOLEAN),
+                                current_user.affiliation.position == "CEO",
                             )
                         ]
                     )
@@ -56,13 +62,14 @@ class ProjectsResource(Resource):
             )
             .offset(offset_args.get("offset", 0))
             .limit(offset_args.get("limit", 10))
-            .all()
         )
+        projects: List[Project] = projects_query.all()
 
         return projects
 
     @jwt_required()
     @has_permission("project")
+    @has_endpoint_permission("org_name", OrganizationNeed)
     @api.expect(
         project_parser,
     )

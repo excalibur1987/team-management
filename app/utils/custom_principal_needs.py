@@ -2,4 +2,6 @@ from functools import partial
 
 from flask_principal import Need
 
-ProjectNeed = partial(Need, 'project')
+ProjectNeed = partial(Need, "project")
+
+OrganizationNeed = partial(Need, "organization")
