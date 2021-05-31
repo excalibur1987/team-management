@@ -4,9 +4,10 @@ import werkzeug
 from dateutil.parser import parse
 from flask_restx.reqparse import RequestParser
 
-from app.utils.parsers import DateParserType, offset_parser
+from app.utils.parsers import DateParserType
 
-query_parser = offset_parser.copy().add_argument(
+query_parser = RequestParser()
+query_parser.add_argument(
     "title",
     type=str,
     ignore=True,
