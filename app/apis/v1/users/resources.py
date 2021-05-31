@@ -27,19 +27,10 @@ from app.utils.file_handler import FileHandler
 from app.utils.parsers import offset_parser
 
 from ..roles.models import Role
-from .models import Session, User
+from .api_models import session_model, user_model
+from .namespace import api
 from .parsers import user_info_parser, user_login_parser, user_parser
-from .serializers import session_serializer, user_serializer
 from .utils import extract_request_info
-
-api = ExtendedNameSpace("users", description="Users operations")
-
-user_model = api.model(
-    "User",
-    user_serializer,
-)
-
-session_model = api.model("Session", session_serializer)
 
 current_user: "User"
 
@@ -160,7 +151,7 @@ class UserResource(Resource):
         return {}
 
 
-class Logout(Resource):
+class LogoutResource(Resource):
     @api.doc("logout user and invalidate session")
     def get(self):
 
@@ -174,7 +165,7 @@ class Logout(Resource):
         return response
 
 
-class Login(Resource):
+class LoginResource(Resource):
     @api.doc("login user")
     @api.response(200, "Successful login", model=user_model)
     @api.response(404, "Invalid url")
@@ -196,7 +187,7 @@ class Login(Resource):
         user_session = Session(
             user=user, token=get_jti(token), **extract_request_info(request=request)
         )
-        user_session.save()
+        user_session.save(True)
         response = make_response(
             marshal(
                 user,
@@ -272,19 +263,3 @@ class UserSessions(Resource):
             for session_ in user_sessions
             if session_.token == active_session_token
         ]
-
-
-api.add_resource(UsersResource, "/")
-api.add_resource(Login, "/login")
-api.add_resource(Logout, "/logout")
-api.add_resource(UserResource, "/<int:user_id>", endpoint="user")
-api.add_resource(
-    UserSessions,
-    "/<int:user_id>/sessions",
-    endpoint="sessions",
-)
-api.add_resource(
-    UserSession,
-    "/<int:user_id>/sessions/<slug>",
-    endpoint="single_session",
-)

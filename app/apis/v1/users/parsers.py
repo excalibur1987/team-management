@@ -42,8 +42,8 @@ user_info_parser.add_argument(
     location="form",
     required=False,
 ).add_argument(
-    "mobile",
-    dest="mobile",
+    "phone",
+    dest="phone",
     type=str,
     location="form",
     required=False,

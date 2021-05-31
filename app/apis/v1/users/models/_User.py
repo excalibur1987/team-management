@@ -8,6 +8,7 @@ from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import BOOLEAN, Integer, String
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from app.apis.v1.asset_storage.models import AssetStorage
 from app.database import BaseModel, DatedModel, db
 from app.exceptions import UserExceptions
 from app.utils.file_handler import FileHandler
@@ -167,6 +168,11 @@ class User(BaseModel, DatedModel):
         db.session.commit()
 
     @hybrid_property
-    def employees(self):
+    def employees(self) -> List["User"]:
 
         return User.query.filter(User.manager_id == User.id).all()
+
+    @hybrid_property
+    def assets(self) -> List[AssetStorage]:
+
+        return AssetStorage.query.filter(AssetStorage.added_by_id == self.id).all()

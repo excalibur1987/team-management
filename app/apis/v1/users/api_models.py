@@ -1,7 +1,19 @@
 from flask_jwt_extended.utils import get_jwt
 from flask_restx import fields
 
+from app.apis.v1.organization.api_models import organization_model
 from app.utils import UrlWArgs
+from app.utils.extended_objects import Nested
+
+from .namespace import api
+
+affiliation_serializer = {
+    "name": fields.String(attribute=".department.name"),
+    "position": fields.String(),
+}
+
+affiliation_model = api.model("AffiliationModel", affiliation_serializer)
+
 
 user_serializer = {
     "id": fields.Integer(description="User unique identifier"),
@@ -10,12 +22,28 @@ user_serializer = {
     "active": fields.Boolean,
     "email": fields.String(description="User's email"),
     "photo": fields.String(description="Url for user's avatar", attribute="photo.url"),
-    "mobile": fields.String,
+    "phone": fields.String,
     "roles": fields.List(
         fields.String(attribute="name"), description="A list of user roles"
     ),
     "token": fields.String(default=None),
+    "organization": Nested(
+        organization_model,
+        attribute="affiliation.organization",
+        only=[
+            "name",
+        ],
+    ),
+    "department": fields.Nested(
+        affiliation_model,
+        attribute="affiliation",
+    ),
 }
+
+user_model = api.model(
+    "User",
+    user_serializer,
+)
 
 session_serializer = {
     "id": fields.Integer(description="Session's unique id"),
@@ -42,3 +70,5 @@ session_serializer = {
         description="Session endpoint",
     ),
 }
+
+session_model = api.model("Session", session_serializer)
