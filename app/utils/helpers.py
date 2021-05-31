@@ -15,6 +15,7 @@ from typing import (
 )
 
 from flask_migrate import revision
+from flask_restx.reqparse import RequestParser
 
 from app.database import BaseModel, ExtendedModel, db
 
@@ -251,3 +252,14 @@ def get_user_entity_permissions(user_id: int):
         .all()
     )
     return unioned_entity_permissions
+
+
+def combine_parsers(*parsers: "RequestParser") -> RequestParser:
+    """combines two request parsers to a new parser"""
+    parsers: list[RequestParser] = list(parsers)
+    new_parser = parsers.pop(0).copy()
+    for parser in parsers:
+        for arg in parser.args:
+            new_parser.add_argument(arg)
+
+    return new_parser
