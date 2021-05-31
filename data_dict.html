@@ -285,17 +285,17 @@
                 <td rowspan="2" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_storage_added_by_id_users
+                  fk_asset_storage_updated_by_id_users
                 </td>
-                <td colspan="1">added_by_id</td>
+                <td colspan="1">updated_by_id</td>
               </tr>
           
               <tr>
                 
                 <td rowspan="1" colspan="1">
-                  fk_asset_storage_updated_by_id_users
+                  fk_asset_storage_added_by_id_users
                 </td>
-                <td colspan="1">updated_by_id</td>
+                <td colspan="1">added_by_id</td>
               </tr>
             
               <tr>
@@ -724,14 +724,6 @@
                 <td rowspan="3" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_projects_updated_by_id_users
-                </td>
-                <td colspan="1">updated_by_id</td>
-              </tr>
-          
-              <tr>
-                
-                <td rowspan="1" colspan="1">
                   fk_projects_cancelled_by_id_users
                 </td>
                 <td colspan="1">cancelled_by_id</td>
@@ -743,6 +735,14 @@
                   fk_projects_added_by_id_users
                 </td>
                 <td colspan="1">added_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_projects_updated_by_id_users
+                </td>
+                <td colspan="1">updated_by_id</td>
               </tr>
             
               <tr>
@@ -863,22 +863,6 @@
                 <td rowspan="4" colspan="1">ForeignKeyConstraint</td>
                 
                 <td rowspan="1" colspan="1">
-                  fk_project_asset_asset_id_asset_storage
-                </td>
-                <td colspan="1">asset_id</td>
-              </tr>
-          
-              <tr>
-                
-                <td rowspan="1" colspan="1">
-                  fk_project_asset_project_id_projects
-                </td>
-                <td colspan="1">project_id</td>
-              </tr>
-          
-              <tr>
-                
-                <td rowspan="1" colspan="1">
                   fk_project_asset_added_by_id_users
                 </td>
                 <td colspan="1">added_by_id</td>
@@ -890,6 +874,22 @@
                   fk_project_asset_updated_by_id_users
                 </td>
                 <td colspan="1">updated_by_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_asset_id_asset_storage
+                </td>
+                <td colspan="1">asset_id</td>
+              </tr>
+          
+              <tr>
+                
+                <td rowspan="1" colspan="1">
+                  fk_project_asset_project_id_projects
+                </td>
+                <td colspan="1">project_id</td>
               </tr>
             
               <tr>

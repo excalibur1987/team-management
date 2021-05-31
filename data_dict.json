@@ -121,17 +121,17 @@
     ],
     "constraints": [
       {
-        "name": "fk_asset_storage_added_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "added_by_id"
-        ]
-      },
-      {
         "name": "fk_asset_storage_updated_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
           "updated_by_id"
+        ]
+      },
+      {
+        "name": "fk_asset_storage_added_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "added_by_id"
         ]
       },
       {
@@ -377,13 +377,6 @@
     ],
     "constraints": [
       {
-        "name": "fk_projects_updated_by_id_users",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "updated_by_id"
-        ]
-      },
-      {
         "name": "fk_projects_cancelled_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
@@ -395,6 +388,13 @@
         "type": "ForeignKeyConstraint",
         "columns": [
           "added_by_id"
+        ]
+      },
+      {
+        "name": "fk_projects_updated_by_id_users",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "updated_by_id"
         ]
       },
       {
@@ -459,20 +459,6 @@
     ],
     "constraints": [
       {
-        "name": "fk_project_asset_asset_id_asset_storage",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "asset_id"
-        ]
-      },
-      {
-        "name": "fk_project_asset_project_id_projects",
-        "type": "ForeignKeyConstraint",
-        "columns": [
-          "project_id"
-        ]
-      },
-      {
         "name": "fk_project_asset_added_by_id_users",
         "type": "ForeignKeyConstraint",
         "columns": [
@@ -484,6 +470,20 @@
         "type": "ForeignKeyConstraint",
         "columns": [
           "updated_by_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_asset_id_asset_storage",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "asset_id"
+        ]
+      },
+      {
+        "name": "fk_project_asset_project_id_projects",
+        "type": "ForeignKeyConstraint",
+        "columns": [
+          "project_id"
         ]
       },
       {
