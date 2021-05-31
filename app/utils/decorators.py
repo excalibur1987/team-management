@@ -65,3 +65,17 @@ def has_permission(
         return wrapped
 
     return wrapper
+
+
+def has_endpoint_permission(url_placeholder: str, need: Need):
+    def wrapper(fn: Callable):
+        @wraps(fn)
+        def wrapped(*args, **kwargs):
+            identity: Identity = g.identity
+            if not identity.can(Permission(need(kwargs.get(url_placeholder, "")))):
+                raise InvalidUsage.user_not_authorized()
+            return fn(*args, **kwargs)
+
+        return wrapped
+
+    return wrapper
