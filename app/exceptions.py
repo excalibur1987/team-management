@@ -18,7 +18,7 @@ UNSUPPORTED_FORMAT = template(["Unsupported file format"], code=415)
 INVALID_SEARCH_PARAMS = template("No data available to fit your search", code=404)
 
 
-class InvalidUsage(Exception):
+class BasicException(Exception):
     status_code = 500
 
     def __init__(self, errors, status_code=None, payload=None):
@@ -34,6 +34,8 @@ class InvalidUsage(Exception):
         }
         return jsonify(rv), self.status_code
 
+
+class InvalidUsage(BasicException):
     @classmethod
     def custom_error(cls, message, code=500):
         return cls(**template([message], code))
@@ -83,21 +85,8 @@ PASSWORD_CHECK_INVALID = template(
 )
 
 
-class UserExceptions(InvalidUsage):
+class UserExceptions(BasicException):
     status_code = 500
-
-    def __init__(self, errors, status_code=None, payload=None):
-        InvalidUsage.__init__(self)
-        self.errors = errors
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
-
-    def to_json(self):
-        rv = {
-            "errors": self.errors,
-        }
-        return jsonify(rv), self.status_code
 
     @classmethod
     def user_already_registered(cls):

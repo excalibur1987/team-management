@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from flask.app import Flask
-from flask_jwt_extended.exceptions import CSRFError
+from flask_jwt_extended.exceptions import CSRFError, NoAuthorizationError
 from flask_jwt_extended.jwt_manager import JWTManager
 from flask_principal import (
     Identity,
@@ -14,8 +14,9 @@ from flask_principal import (
 )
 
 from app.apis.v1.app_logging.models import ErrorLog
-from app.exceptions import InvalidUsage, UserExceptions
+from app.exceptions import InvalidUsage
 from app.utils import g
+from app.utils.custom_principal_needs import OrganizationNeed
 from app.utils.helpers import get_user_entity_permissions
 
 if TYPE_CHECKING:
@@ -48,6 +49,8 @@ def generate_principal_identity(user: "User"):
             if getattr(entity, perm)
         ]:
             identity.provides.add(permission)
+
+    identity.provides.add(OrganizationNeed(user.affiliation.organization.name))
 
     return identity
 
@@ -90,11 +93,11 @@ def invalid_error_handler(e: InvalidUsage):
 
 
 def invalid_csrf(e: CSRFError):
-    raise UserExceptions.wrong_login_creds()
+    return InvalidUsage.custom_error("Please log-in first.", 402).to_json()
 
 
 def permission_denied(e: PermissionDenied):
-    raise InvalidUsage.user_not_authorized()
+    return InvalidUsage.user_not_authorized().to_json()
 
 
 def normalize_errors(e: Exception):
@@ -132,9 +135,10 @@ def register_handlers(app: Flask) -> Flask:
     """
     identity_loaded.connect_via(app)(on_identity_loaded)
 
-    app.errorhandler(InvalidUsage)(invalid_error_handler)
     app.errorhandler(PermissionDenied)(permission_denied)
     app.errorhandler(CSRFError)(invalid_csrf)
+    app.errorhandler(NoAuthorizationError)(invalid_csrf)
+    app.errorhandler(InvalidUsage)(invalid_error_handler)
     app.errorhandler(Exception)(normalize_errors)
 
     return app

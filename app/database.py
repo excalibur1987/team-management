@@ -43,11 +43,12 @@ class ExtendedModel(Model):
     )
     date_updated: "Column[datetime]"
 
-    def update(self, ignore_none: bool = False, **kwargs):
+    def update(self, ignore_none: bool = False, persist: bool = False, **kwargs):
         for key in kwargs.keys():
             if not ignore_none or kwargs.get(key) is not None:
                 setattr(self, key, kwargs.get(key))
-        db.session.commit()
+        if persist:
+            db.session.commit()
 
     @classmethod
     def get(cls: T, id: int = None, **kwargs) -> Union[T, None]:
