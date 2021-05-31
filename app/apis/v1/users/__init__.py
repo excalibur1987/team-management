@@ -5,10 +5,12 @@ from .resources import (
     UserResource,
     UserSession,
     UserSessions,
+    UserSignupResource,
     UsersResource,
 )
 
 api.add_resource(UsersResource, "/")
+api.add_resource(UserSignupResource, "/signup")
 api.add_resource(LoginResource, "/login")
 api.add_resource(LogoutResource, "/logout")
 api.add_resource(UserResource, "/<int:user_id>", endpoint="user")

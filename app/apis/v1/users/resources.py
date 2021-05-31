@@ -15,19 +15,23 @@ from flask_jwt_extended.utils import (
 )
 from flask_principal import Permission, RoleNeed
 from flask_restx import Resource, marshal
+from flask_restx.reqparse import RequestParser
 from sqlalchemy.sql.expression import or_
 from sqlalchemy.sql.functions import func
 
+from app.apis.v1.organization.models import Organization, OrganizationDepartment
+from app.apis.v1.organization.parsers import department_parser, organization_parser
 from app.database import db
 from app.exceptions import InvalidUsage, UserExceptions
 from app.utils import g
 from app.utils.decorators import has_roles
-from app.utils.extended_objects import ExtendedNameSpace
 from app.utils.file_handler import FileHandler
+from app.utils.helpers import combine_parsers
 from app.utils.parsers import offset_parser
 
 from ..roles.models import Role
 from .api_models import session_model, user_model
+from .models import Session, User, UserAffiliation
 from .namespace import api
 from .parsers import user_info_parser, user_login_parser, user_parser
 from .utils import extract_request_info
@@ -36,30 +40,110 @@ current_user: "User"
 
 
 class UsersResource(Resource):
+    active_users_parser = RequestParser()
+    active_users_parser.add_argument(
+        "active",
+        type=int,
+        choices=[0, 1],
+        location="args",
+    )
+
     @jwt_required()
+    @has_roles("admin")
     @api.doc("get list of users")
+    @api.expect(active_users_parser)
     @api.marshal_list_with(user_model, skip_none=True)
     def get(
         self,
     ):
         """Gets list of users"""
 
-        return current_user
+        args = self.active_users_parser.parse_args()
 
-    @jwt_required()
+        return User.query.filter(User.active == bool(args.get("active", 1))).all()
+
+
+class UserSignupResource(Resource):
+    user_signup_parser = user_parser.copy().add_argument(
+        "position",
+        type=str,
+        choices=UserAffiliation.VALID_POSITIONS,
+        location="form",
+    )
+
     @api.doc("Create new user")
     @api.marshal_with(user_model)
-    @api.expect(user_parser)
-    @has_roles("admin")
+    @api.expect(
+        combine_parsers(
+            user_signup_parser,
+            organization_parser,
+            department_parser,
+        )
+    )
     def post(self):
         """Creates new user - requires admin permission-."""
-        args = user_parser.parse_args()
-        # if User.query.filter(or_(User.username==args.get("username"), User.email==args.get("email"))).count() > 0:
-        #     raise InvalidUsage.custom_error("username")
-        user = User(**args)
-        user.save(True)
+        organization_args: dict = dict(
+            (k.replace("organization_", ""), v)
+            for (k, v) in organization_parser.parse_args().items()
+        )
+        user_args: dict = self.user_signup_parser.parse_args()
+        user_position = user_args.pop("position")
+        department_args: dict = dict(
+            (k.replace("dep_", ""), v)
+            for (k, v) in department_parser.parse_args().items()
+        )
 
+        use_user_info = organization_args.pop("my_info", False)
+        if use_user_info:
+            organization_args.update(
+                {"email": user_args.get("email"), "phone": user_args.get("phone")}
+            )
+
+        if (
+            Organization.query.filter(
+                func.lower(Organization.name)
+                == organization_args.get("name", "").lower()
+            ).count()
+            > 0
+        ):
+            raise InvalidUsage.custom_error(
+                "Organization already registered, kindly "
+                + "contact responsible person to send you an invitation",
+                401,
+            )
+        photo: werkzeug.datastructures.FileStorage = user_args.pop("photo")
+
+        if photo:
+            photostorage = FileHandler(data=photo.stream, title=photo.filename)
+            user_args["photo"] = photostorage
+        user = User(**user_args)
+        user.save()
         user.add_roles(Role.get(name="user"))
+        db.session.flush()
+
+        organization = Organization(**organization_args, contact_user_id=user.id)
+        organization.save()
+        db.session.flush()
+
+        if len([val for val in department_args.values() if val is not None]) > 0:
+            if user_position.lower() == "ceo":
+                raise InvalidUsage.custom_error(
+                    "CEO can only be specified with no department", 401
+                )
+
+            department = OrganizationDepartment(**department_args, org=organization)
+            department.save()
+            db.session.flush()
+        else:
+            department = None
+
+        affiliation = UserAffiliation(
+            user=user, org=organization, position=user_position, org_dep=department
+        )
+        affiliation.save()
+        db.session.commit()
+
+        photostorage.save()
         return user
 
 
