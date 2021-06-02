@@ -53,30 +53,56 @@ class Nested(fields.Nested):
         allow_null=False,
         skip_none=False,
         as_list=False,
-        only: List[str] = [],
+        only: List[str] = None,
         **kwargs,
     ):
+        self.only = only
         super().__init__(
-            model, allow_null=allow_null, skip_none=skip_none, as_list=as_list, **kwargs
+            (
+                model
+                if only is None
+                else dict(
+                    (k, v)
+                    for (k, v) in model.items()
+                    if k.startswith("__") or k in only
+                )
+            ),
+            allow_null=allow_null,
+            skip_none=skip_none,
+            as_list=as_list,
+            **kwargs,
         )
-        self.only = kwargs.get("only", [])
 
-    def output(self, key, obj, ordered=False, **kwargs):
-        value = fields.get_value(key if self.attribute is None else self.attribute, obj)
-        if value is None:
-            if self.allow_null:
-                return None
-            elif self.default is not None:
-                return self.default
-        if len(self.only) == 0:
-            return fields.marshal(
-                value, self.nested, skip_none=self.skip_none, ordered=ordered
-            )
-        new_value = {}
-        if isinstance(value, dict):
-            new_value = dict((key, new_value.get(key)) for key in self.only)
-        else:
-            new_value = dict((key, getattr(new_value, key)) for key in self.only)
-        return fields.marshal(
-            new_value, self.nested, skip_none=self.skip_none, ordered=ordered
+
+class IndexedAttribute:
+    def __init__(self, name, index) -> None:
+        self.name = name
+        self.index = index
+
+    def __repr__(self) -> str:
+        return self.name
+
+    def default(self):
+        return self.name
+
+
+class SubscriptableEnum:
+
+    __list: List
+
+    def __init__(self, list_: List[str]) -> None:
+        self.__list = []
+        for idx, item in enumerate(list_):
+            indexed_item = IndexedAttribute(item, idx)
+            self.__list.append(indexed_item)
+            setattr(self, item.upper().replace(" ", "_"), indexed_item)
+
+    def __getitem__(self, i):
+        return (
+            self.__list[i] if isinstance(i, int) else self.__list[self.__list.index(i)]
         )
+
+    def get_items(self):
+        return self.__list
+
+    items = property(get_items)
