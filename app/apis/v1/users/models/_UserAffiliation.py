@@ -1,11 +1,12 @@
 from typing import TYPE_CHECKING
 
+from flask import current_app
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer
 
 from app.database import BaseModel
-from app.exceptions import InvalidUsage
+from app.utils.extended_objects import IndexedAttribute
 
 if TYPE_CHECKING:
     from app.apis.v1.organization.models import Organization, OrganizationDepartment
@@ -14,14 +15,6 @@ if TYPE_CHECKING:
 
 
 class UserAffiliation(BaseModel):
-    VALID_POSITIONS = [
-        "CEO",
-        "Manager",
-        "Assistant Manager",
-        "Employee",
-        "Trainee",
-        "Other",
-    ]
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, comment="")
 
@@ -37,16 +30,10 @@ class UserAffiliation(BaseModel):
 
     def get_position(self):
 
-        return self.VALID_POSITIONS[self.position_id]
+        return current_app.config["VALID_POSITIONS"][self.position_id]
 
-    def set_position(self, value: str):
-        if value not in self.VALID_POSITIONS:
-            raise InvalidUsage.custom_error("Invalid position", 401)
-        self.position_id = [
-            idx
-            for idx, pos in enumerate(self.VALID_POSITIONS)
-            if value.lower() == pos.lower()
-        ][0]
+    def set_position(self, value: IndexedAttribute):
+        self.position_id = value.index
 
     position = property(get_position, set_position)
 
@@ -54,7 +41,7 @@ class UserAffiliation(BaseModel):
         self,
         user: "User",
         org: "Organization",
-        position: str,
+        position: IndexedAttribute,
         org_dep: "OrganizationDepartment" = None,
     ) -> None:
 

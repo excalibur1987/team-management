@@ -25,6 +25,7 @@ from app.apis.v1.organization.models import Organization, OrganizationDepartment
 from app.apis.v1.organization.parsers import department_parser, organization_parser
 from app.database import db
 from app.exceptions import InvalidUsage, UserExceptions
+from app.settings import Config
 from app.utils import g
 from app.utils.decorators import has_roles
 from app.utils.file_handler import FileHandler
@@ -66,7 +67,7 @@ class UserSignupResource(Resource):
     user_signup_parser = user_parser.copy().add_argument(
         "position",
         type=str,
-        choices=UserAffiliation.VALID_POSITIONS,
+        choices=[str(item) for item in Config.VALID_POSITIONS.items],
         location="form",
     )
 

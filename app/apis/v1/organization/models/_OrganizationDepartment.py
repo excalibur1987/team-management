@@ -29,7 +29,8 @@ class OrganizationDepartment(BaseModel):
         self.org_id = org.id
         self.name = (
             current_app.config["VALID_DEPARTMENTS"][id]
-            if id is not None and len(current_app.config["VALID_DEPARTMENTS"]) > id
+            if id is not None
+            and len(current_app.config["VALID_DEPARTMENTS"].items) > id
             else name
         )
 

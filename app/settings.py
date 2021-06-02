@@ -6,6 +6,8 @@ from datetime import timedelta
 import pytz
 from sqlalchemy.pool import NullPool
 
+from app.utils.extended_objects import SubscriptableEnum
+
 
 class Config(object):
     # General Flask configurations
@@ -58,7 +60,18 @@ class Config(object):
     AWS_SECRET_ACCESS_KEY = os.getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY", None)
     S3_BUCKET_NAME = os.getenv("BUCKETEER_BUCKET_NAME", None)
     AWS_ENDPOINT = os.getenv("AWS_ENDPOINT", None)
-    VALID_DEPARTMENTS = os.getenv("VALID_DEPARTMENTS", "").split(",")
+
+    VALID_DEPARTMENTS = SubscriptableEnum(os.getenv("VALID_DEPARTMENTS", "").split(","))
+    VALID_POSITIONS = SubscriptableEnum(
+        [
+            "CEO",
+            "Manager",
+            "Assistant Manager",
+            "Employee",
+            "Trainee",
+            "Other",
+        ]
+    )
 
 
 class DevConfig(Config):
