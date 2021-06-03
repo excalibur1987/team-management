@@ -14,6 +14,7 @@ class Config(object):
     FLASK_APP = os.getenv("FLASK_APP", "autoapp:app")
     TZ = pytz.timezone(os.getenv("TZ", "UTC"))
     SERVER_NAME = os.getenv("SERVER_NAME", None)
+    FLASK_DEBUG = os.getenv("FLASK_DEBUG", 0) == 1
     SECRET_KEY = os.getenv(
         "SECRET_KEY",
         "".join(
@@ -61,7 +62,14 @@ class Config(object):
     S3_BUCKET_NAME = os.getenv("BUCKETEER_BUCKET_NAME", None)
     AWS_ENDPOINT = os.getenv("AWS_ENDPOINT", None)
 
-    VALID_DEPARTMENTS = SubscriptableEnum(os.getenv("VALID_DEPARTMENTS", "").split(","))
+    VALID_DEPARTMENTS = SubscriptableEnum(
+        list(
+            set(
+                [item.upper() for item in os.getenv("VALID_DEPARTMENTS", "").split(",")]
+                + ["OTHER"]
+            )
+        )
+    )
     VALID_POSITIONS = SubscriptableEnum(
         [
             "CEO",

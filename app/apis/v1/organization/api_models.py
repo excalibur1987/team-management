@@ -6,7 +6,7 @@ from app.utils.extended_objects import Nested
 from .namespace import api
 
 organization_meta_entity_model = api.model(
-    "OrganizationMetaEntityModel", {"index": fields.Integer(), "name": fields.String()}
+    "OrganizationMetaEntityModel", {"id": fields.Integer(), "name": fields.String()}
 )
 organization_meta_model = api.model(
     "OrganizationMetaModel",

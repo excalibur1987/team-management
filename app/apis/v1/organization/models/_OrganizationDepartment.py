@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List
 
-from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer, String
 
 from app.database import BaseModel
+from app.utils.extended_objects import IndexedAttribute
 
 if TYPE_CHECKING:
     from app.apis.v1.users.models import User  # NOQA
@@ -22,17 +22,11 @@ class OrganizationDepartment(BaseModel):
 
     def __init__(
         self,
-        id: int = None,
-        name: str = None,
+        department: IndexedAttribute,
         org: "Organization" = None,
     ) -> None:
         self.org_id = org.id
-        self.name = (
-            current_app.config["VALID_DEPARTMENTS"][id]
-            if id is not None
-            and len(current_app.config["VALID_DEPARTMENTS"].items) > id
-            else name
-        )
+        self.name = department.name
 
     @hybrid_property
     def users(self) -> List["User"]:

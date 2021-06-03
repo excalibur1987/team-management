@@ -20,7 +20,7 @@ user_serializer = {
     "active": fields.Boolean,
     "email": fields.String(description="User's email"),
     "photo": fields.String(description="Url for user's avatar", attribute="photo.url"),
-    "phone": fields.String,
+    "phone": fields.String(),
     "roles": fields.List(
         fields.String(attribute="name"), description="A list of user roles"
     ),

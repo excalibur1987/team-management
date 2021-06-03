@@ -33,7 +33,7 @@ class UserAffiliation(BaseModel):
         return current_app.config["VALID_POSITIONS"][self.position_id]
 
     def set_position(self, value: IndexedAttribute):
-        self.position_id = value.index
+        self.position_id = value.id
 
     position = property(get_position, set_position)
 

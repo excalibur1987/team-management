@@ -46,7 +46,7 @@ class ProjectUser(BaseModel, DatedModel, CancelableModel):
         assert role in ProjectUser.PROJECT_ROLES
         self.project_id = project.id
         self.user_id = user.id
-        self.role_id = ProjectUser.PROJECT_ROLES.index(role)
+        self.role_id = ProjectUser.PROJECT_ROLES.id(role)
 
     @hybrid_property
     def role(self) -> RoleType:

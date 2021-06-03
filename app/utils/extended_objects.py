@@ -1,3 +1,4 @@
+import copy
 from functools import wraps
 from typing import Callable, List, Union
 
@@ -57,16 +58,16 @@ class Nested(fields.Nested):
         **kwargs,
     ):
         self.only = only
+        if self.only is not None:
+            model_copy = copy.deepcopy(model)
+            for k in model._schema.get("properties").keys():
+                if k not in only:
+                    del model_copy[k]
+                    if k in model_copy.resolved:
+                        del model_copy.resolved[k]
+            model = model_copy
         super().__init__(
-            (
-                model
-                if only is None
-                else dict(
-                    (k, v)
-                    for (k, v) in model.items()
-                    if k.startswith("__") or k in only
-                )
-            ),
+            model,
             allow_null=allow_null,
             skip_none=skip_none,
             as_list=as_list,
@@ -75,15 +76,18 @@ class Nested(fields.Nested):
 
 
 class IndexedAttribute:
-    def __init__(self, name, index) -> None:
+    def __init__(self, name, id) -> None:
         self.name = name
-        self.index = index
+        self.id = id
 
     def __repr__(self) -> str:
         return self.name
 
     def default(self):
         return self.name
+
+    def __eq__(self, o: object) -> bool:
+        return isinstance(o, IndexedAttribute) and self.name == o.name
 
 
 class SubscriptableEnum:
@@ -97,12 +101,12 @@ class SubscriptableEnum:
             self.__list.append(indexed_item)
             setattr(self, item.upper().replace(" ", "_"), indexed_item)
 
-    def __getitem__(self, i):
+    def __getitem__(self, i) -> IndexedAttribute:
         return (
             self.__list[i] if isinstance(i, int) else self.__list[self.__list.index(i)]
         )
 
-    def get_items(self):
+    def get_items(self) -> List[IndexedAttribute]:
         return self.__list
 
     items = property(get_items)

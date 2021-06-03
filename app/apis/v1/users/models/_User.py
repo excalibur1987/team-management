@@ -126,7 +126,7 @@ class User(BaseModel, DatedModel):
         self.username = username
         self.password = password
         self.active = active
-        self.email = email
+        self.email = email.lower()
         self.photo = photo
         self.phone = phone
         self.first_name = first_name
