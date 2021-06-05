@@ -14,7 +14,7 @@ from flask_principal import (
 )
 
 from app.apis.v1.app_logging.models import ErrorLog
-from app.exceptions import InvalidUsage
+from app.exceptions import BasicException, InvalidUsage
 from app.utils import g
 from app.utils.custom_principal_needs import OrganizationNeed
 from app.utils.helpers import get_user_entity_permissions
@@ -138,7 +138,7 @@ def register_handlers(app: Flask) -> Flask:
     app.errorhandler(PermissionDenied)(permission_denied)
     app.errorhandler(CSRFError)(invalid_csrf)
     app.errorhandler(NoAuthorizationError)(invalid_csrf)
-    app.errorhandler(InvalidUsage)(invalid_error_handler)
+    app.errorhandler(BasicException)(invalid_error_handler)
     app.errorhandler(Exception)(normalize_errors)
 
     return app

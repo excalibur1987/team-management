@@ -73,11 +73,10 @@ class Config(object):
     VALID_POSITIONS = SubscriptableEnum(
         [
             "CEO",
-            "Manager",
-            "Assistant Manager",
-            "Employee",
-            "Trainee",
-            "Other",
+            "MANAGER",
+            "ASSISTANT MANAGER",
+            "EMPLOYEE",
+            "TRAINEE",
         ]
     )
 

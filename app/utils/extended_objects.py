@@ -1,5 +1,6 @@
 import copy
 from functools import wraps
+from random import random
 from typing import Callable, List, Union
 
 from flask_restx import Model, OrderedModel, fields
@@ -76,9 +77,9 @@ class Nested(fields.Nested):
 
 
 class IndexedAttribute:
-    def __init__(self, name, id) -> None:
+    def __init__(self, name, id=None) -> None:
         self.name = name
-        self.id = id
+        self.id = id or int(random() * 100)
 
     def __repr__(self) -> str:
         return self.name
