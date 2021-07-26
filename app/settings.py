@@ -11,6 +11,7 @@ from app.utils.extended_objects import SubscriptableEnum
 
 class Config(object):
     # General Flask configurations
+    APP_NAME = os.getenv("APP_NAME")
     FLASK_APP = os.getenv("FLASK_APP", "autoapp:app")
     TZ = pytz.timezone(os.getenv("TZ", "UTC"))
     SERVER_NAME = os.getenv("SERVER_NAME", None)
@@ -79,6 +80,14 @@ class Config(object):
             "TRAINEE",
         ]
     )
+
+    # Flak-Mail Settings
+    MAIL_SERVER = os.getenv("MAIL_SERVER")
+    MAIL_PORT = int(os.getenv("MAIL_PORT"))
+    MAIL_USE_SSL = bool(int(os.getenv("MAIL_USE_SSL")))
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
 
 
 class DevConfig(Config):

@@ -1,5 +1,6 @@
 from flask.app import Flask
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_principal import Principal
 
@@ -9,6 +10,7 @@ from app.handlers import jwt_handlers
 jwt = JWTManager()
 migrate = Migrate()
 principal = Principal()
+mail = Mail()
 
 
 def register_extensions(app: Flask) -> Flask:
@@ -31,6 +33,8 @@ def register_extensions(app: Flask) -> Flask:
 
     # Configure flask_principal
     principal.init_app(app)
+
+    mail.init_app(app)
 
     # Configure JWT and its loaders
     jwt.init_app(app)
