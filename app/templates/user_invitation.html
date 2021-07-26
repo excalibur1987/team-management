@@ -1,0 +1,23 @@
+{% extends './layout.html'%} {% block message_body %}
+<style>
+    article{
+        font-size: larger;
+    }
+</style>
+<article>
+  <p>
+    You have an invitation from <i>{{current_user.name}}</i> to join
+    <b>{{organization.name}}</b> <wbr /> on <b>{{config.APP_NAME}}</b>.
+  </p>
+
+  <p>Kindly follow the following link.</p>
+  <p><a href="{{url}}" target="_blank">Invitation link</a></p>
+  <p>
+    If the above link doesn't work, please copy the following into a new
+    browser's tab
+  </p>
+
+  <pre>{{url}}</pre>
+</article>
+
+{% endblock %}

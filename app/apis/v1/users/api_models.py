@@ -6,11 +6,22 @@ from app.utils import UrlWArgs
 from .namespace import api
 
 affiliation_serializer = {
-    "name": fields.String(attribute=".department.name"),
+    "name": fields.String(attribute="department.name"),
     "position": fields.String(),
 }
 
 affiliation_model = api.model("AffiliationModel", affiliation_serializer)
+
+user_invitation_serializer = {
+    "name": fields.String(),
+    "email": fields.String(),
+    "department": fields.String(attribute="department.name"),
+    "organization": fields.String(attribute="organization.name"),
+    "position": fields.String(),
+    "url": fields.Url(endpoint="v1.user_invitation", absolute=True, attribute="slug"),
+}
+
+user_invitation_model = api.model("UserInvitation", user_invitation_serializer)
 
 
 user_serializer = {

@@ -352,3 +352,54 @@ class UserSessions(Resource):
             for session_ in user_sessions
             if session_.token == active_session_token
         ]
+
+
+class UserInvitationResource(Resource):
+    @api.marshal_with(user_invitation_model)
+    def get(self, slug: str):
+
+        return UserInvitation.get(slug=slug)
+
+    @api.expect(user_parser)
+    @api.response(200, "Valid signup", model=user_model)
+    def post(self, slug: str):
+
+        invitation = UserInvitation.get(slug=slug)
+
+        user_args = user_parser.parse_args()
+
+        photo: werkzeug.datastructures.FileStorage = user_args.pop("photo")
+
+        if photo:
+            photostorage = FileHandler(data=photo.stream, title=photo.filename)
+            user_args["photo"] = photostorage
+        user = User(**user_args)
+        user.save()
+        user.add_roles(Role.get(name="user"))
+        db.session.flush()
+
+        affiliation = UserAffiliation(
+            user=user,
+            org=invitation.organization,
+            position=invitation.position,
+            org_dep=invitation.department,
+        )
+        affiliation.save()
+        db.session.commit()
+
+        photostorage.save()
+
+        token = create_access_token(user)
+        user.token = get_csrf_token(token)
+        user_session = Session(
+            user=user, token=get_jti(token), **extract_request_info(request=request)
+        )
+        user_session.save(True)
+        response = make_response(
+            marshal(
+                user,
+                user_model,
+            )
+        )
+        set_access_cookies(response=response, encoded_access_token=token)
+        return response

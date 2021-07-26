@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ config.APP_NAME }}</title>
+    <style>
+      :root {
+        line-height: 18pt;
+      }
+      p.greeting {
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+      footer{
+          padding-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+        <p class="greeting">{% block greeting %}{% endblock %},</p>
+    </header>
+
+    {%block message_body%} {% endblock %}
+
+    <footer>
+        <p>Please don't reply to this email</p>
+      <h3>{{ config.APP_NAME }}</h3>
+    </footer>
+  </body>
+</html>

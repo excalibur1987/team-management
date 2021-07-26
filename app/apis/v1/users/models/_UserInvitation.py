@@ -9,6 +9,7 @@ from sqlalchemy.sql.sqltypes import Integer, String
 from app.database import BaseModel, CancelableModel, DatedModel
 from app.exceptions import InvalidUsage
 from app.settings import Config
+from app.utils.extended_objects import IndexedAttribute
 
 if TYPE_CHECKING:
     from app.apis.v1.organization.models import Organization, OrganizationDepartment
@@ -42,10 +43,10 @@ class UserInvitation(BaseModel, DatedModel, CancelableModel):
 
         return Config.VALID_POSITIONS[self.position_id]
 
-    def set_position(self, value: str):
-        if value not in Config.VALID_POSITIONS.items():
+    def set_position(self, value: IndexedAttribute):
+        if value not in Config.VALID_POSITIONS.items:
             raise InvalidUsage.custom_error("Invalid position", 401)
-        self.position_id = Config.VALID_POSITIONS[value].id
+        self.position_id = value.id
 
     position = property(get_position, set_position)
 
@@ -53,7 +54,7 @@ class UserInvitation(BaseModel, DatedModel, CancelableModel):
         self,
         name: str,
         org: "Organization",
-        position: str,
+        position: IndexedAttribute,
         email: str,
         org_dep: "OrganizationDepartment" = None,
     ) -> None:
@@ -62,6 +63,8 @@ class UserInvitation(BaseModel, DatedModel, CancelableModel):
         self.org_id = org.id
         self.department_id = getattr(org_dep, "id", None)
         self.position = position
-        self.slug = random.choices(
-            string.ascii_uppercase + string.digits + string.ascii_lowercase, k=100
+        self.slug = "".join(
+            random.choices(
+                string.ascii_uppercase + string.digits + string.ascii_lowercase, k=100
+            )
         )
