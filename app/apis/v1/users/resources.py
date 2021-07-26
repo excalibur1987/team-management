@@ -33,8 +33,8 @@ from app.utils.helpers import combine_parsers
 from app.utils.parsers import offset_parser
 
 from ..roles.models import Role
-from .api_models import session_model, user_model
-from .models import Session, User, UserAffiliation
+from .api_models import session_model, user_invitation_model, user_model
+from .models import Session, User, UserAffiliation, UserInvitation
 from .namespace import api
 from .parsers import user_info_parser, user_login_parser, user_parser
 from .utils import extract_request_info
@@ -72,7 +72,7 @@ class UserSignupResource(Resource):
     )
 
     @api.doc("Create new user")
-    @api.marshal_with(user_model)
+    @api.response(200, "user's info", model=user_model)
     @api.expect(
         combine_parsers(
             user_signup_parser,
@@ -144,7 +144,20 @@ class UserSignupResource(Resource):
         db.session.commit()
 
         photostorage.save()
-        return user
+        token = create_access_token(user)
+        user.token = get_csrf_token(token)
+        user_session = Session(
+            user=user, token=get_jti(token), **extract_request_info(request=request)
+        )
+        user_session.save(True)
+        response = make_response(
+            marshal(
+                user,
+                user_model,
+            )
+        )
+        set_access_cookies(response=response, encoded_access_token=token)
+        return response
 
 
 @api.param("user_id", "user's id", type=int)
@@ -155,7 +168,7 @@ class UserResource(Resource):
     @api.marshal_with(user_model)
     def get(self, user_id: int = None):
         """Gets user's info"""
-        user = User.get(id=user_id)
+        user = User.get(id=user_id) if user_id is not None else current_user
 
         return user
 
@@ -165,7 +178,7 @@ class UserResource(Resource):
     @api.expect(user_info_parser)
     def put(self, user_id: int = None):
         """Updates user's info"""
-        if user_id != current_user.id:
+        if user_id is not None:
             raise InvalidUsage.user_not_authorized()
         args: Dict = user_info_parser.parse_args()
 
