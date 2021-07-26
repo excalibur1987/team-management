@@ -5,9 +5,30 @@ from app.utils.extended_objects import Nested
 
 from .namespace import api
 
+entity_serializer = {"id": fields.Integer(), "name": fields.String()}
+
 organization_meta_entity_model = api.model(
-    "OrganizationMetaEntityModel", {"id": fields.Integer(), "name": fields.String()}
+    "OrganizationMetaEntityModel", entity_serializer
 )
+
+affiliation_model = api.model(
+    "UserAffiliation",
+    {
+        "position": fields.String(),
+        "photo": fields.String(attribute="user._photo"),
+        "name": fields.String(attribute="user.name"),
+        "id": fields.Integer(attribute="user_id"),
+    },
+)
+
+organization_department_model = api.model(
+    "OrganizationDepartment",
+    {
+        **entity_serializer,
+        "users": Nested(affiliation_model, as_list=True, attribute="affiliation"),
+    },
+)
+
 organization_meta_model = api.model(
     "OrganizationMetaModel",
     {
@@ -20,10 +41,14 @@ organization_serializer = {
     "id": fields.Integer(description="organization's id"),
     "name": fields.String(),
     "slug": fields.String(),
-    "departments": Nested(organization_meta_model, as_list=True),
+    "ceo": Nested(
+        affiliation_model,
+    ),
+    "departments": Nested(organization_department_model, as_list=True),
     "description": fields.String(),
     "address": fields.String(
-        attribute=lambda org: "\n".join([org.addr_line1, org.addr_line2])
+        attribute=lambda org: org.addr_line1
+        + f"{' ' + org.addr_line2 if org.addr_line2 else ''}"
     ),
     "country": fields.String(),
     "city": fields.String(),
@@ -32,7 +57,7 @@ organization_serializer = {
     "contactPerson": Nested(
         user_model,
         attribute="contact_user",
-        only=["username", "email", "phone"],
+        only=["id", "name", "photo"],
         skip_none=True,
     ),
 }

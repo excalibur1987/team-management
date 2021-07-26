@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, List
 
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer, String
 
@@ -8,7 +9,7 @@ from app.database import BaseModel
 from app.utils.extended_objects import IndexedAttribute
 
 if TYPE_CHECKING:
-    from app.apis.v1.users.models import User  # NOQA
+    from app.apis.v1.users.models import User, UserAffiliation  # NOQA
 
     from ._Organization import Organization
 
@@ -19,6 +20,8 @@ class OrganizationDepartment(BaseModel):
 
     org_id = Column(Integer, ForeignKey("organizations.id"), comment="")
     name = Column(String, nullable=False, comment="department's name")
+
+    affiliation: List["UserAffiliation"] = relationship("UserAffiliation", uselist=True)
 
     def __init__(
         self,

@@ -1,11 +1,13 @@
 from typing import TYPE_CHECKING, List
 from uuid import uuid4
 
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer, String
 
 from app.database import BaseModel, DatedModel
+from app.settings import Config
 
 if TYPE_CHECKING:
     from app.apis.v1.users.models import User
@@ -70,3 +72,12 @@ class Organization(BaseModel, DatedModel):
         self.contact_phone = phone
         self.contact_user_id = contact_user_id
         self.slug = uuid4()
+
+    @hybrid_property
+    def ceo(self):
+        from app.apis.v1.users.models import UserAffiliation
+
+        ceo = UserAffiliation.query.filter_by(
+            org_id=self.id, position_id=Config.VALID_POSITIONS.CEO.id
+        ).first()
+        return ceo

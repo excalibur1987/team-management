@@ -79,7 +79,7 @@ class Nested(fields.Nested):
 class IndexedAttribute:
     def __init__(self, name, id=None) -> None:
         self.name = name
-        self.id = id or int(random() * 100)
+        self.id = id if id is not None else int(random() * 100)
 
     def __repr__(self) -> str:
         return self.name
@@ -93,7 +93,7 @@ class IndexedAttribute:
 
 class SubscriptableEnum:
 
-    __list: List
+    __list: List[IndexedAttribute]
 
     def __init__(self, list_: List[str]) -> None:
         self.__list = []
@@ -103,9 +103,12 @@ class SubscriptableEnum:
             setattr(self, item.upper().replace(" ", "_"), indexed_item)
 
     def __getitem__(self, i) -> IndexedAttribute:
-        return (
-            self.__list[i] if isinstance(i, int) else self.__list[self.__list.index(i)]
-        )
+        if isinstance(i, int):
+            return self.items[i]
+
+        return self.items[
+            [idx for idx, val in enumerate(self.items) if val.name == i][0]
+        ]
 
     def get_items(self) -> List[IndexedAttribute]:
         return self.__list

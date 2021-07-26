@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 class UserAffiliation(BaseModel):
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, comment="")
+    user: "User" = relationship("User")
 
     org_id = Column(Integer, ForeignKey("organizations.id"), comment="")
     organization: "Organization" = relationship("Organization")
